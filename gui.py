@@ -115,7 +115,7 @@ class MineSweeperGui:
                     width=3,
                     font="Calibri 15 bold",
                 )
-                btn.config(command=lambda button=btn: click.get_click(button))
+                btn.config(command=lambda click_btn=btn: click.get_click(click_btn))
                 temp.append(btn)
                 if i in [0, config.ROW + 1] or j in [0, config.COLUMN + 1]:
                     btn.number = 0

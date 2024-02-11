@@ -1,6 +1,7 @@
 """
 Utils module is to implement all the logic for the game with classes:
-- PrintAllButtons
+- BtnConsoleRepr,
+- PrintAllButtons,
 - MinesCalc,
 - Click,
 - MinesInstaller.
@@ -9,6 +10,35 @@ Utils module is to implement all the logic for the game with classes:
 
 from random import shuffle
 from config import Config
+import tkinter as tk
+
+
+class BtnConsoleRepr:
+    """
+    The BtnConsoleRepr class is used to print the tkinter buttons representation
+    into the console for debugging purposes.
+
+    Methods:
+        - print_btn(buttons): This function is used to print the tkinter buttons
+         representation into the console for debugging purposes.
+    """
+
+    @staticmethod
+    def print_btn(buttons):
+        """
+        This function is used to print the tkinter buttons representation
+        into the console for debugging purposes.
+        :param buttons: The List of lists representing a grid of tkinter buttons.
+        :return: None
+        """
+        for i in range(1, Config.ROW + 1):
+            for j in range(1, Config.COLUMN + 1):
+                btn = buttons[i][j]
+                if btn.is_mine:
+                    print("M", end="")
+                else:
+                    print(btn.adjacent_mines_count, end="")
+            print()
 
 
 class PrintAllButtons:
@@ -56,16 +86,16 @@ class MinesCalc:
     """
 
     @staticmethod
-    def nearest_cells_check(buttons, i, j):
+    def nearest_cells_check(buttons, i: int, j: int):
         """
         The method is used to count how many mines are
         on the adjacent cells.
         :param buttons: The list of lists representing a grid of tkinter buttons,
         :param i: The row number of the minefield grid,
         :param j: The column number of the minefield grid.
-        :return: None
+        :return: How many mines are on the adjacent cells.
         """
-        dif = [-1, 0, 1]
+        dif = [-1, 0, 1]  # It is used to obtain the coordinates of adjacent cells.
         count = 0
         for x in map(lambda el: i + el, dif):
             for y in map(lambda el: j + el, dif):
@@ -100,21 +130,30 @@ class Click:
     """
 
     @staticmethod
-    def get_click(button):
+    def get_click(click_btn):
         """
         Implement the click button commands.
 
-        :param button: The bound method of MyButton.
+        :param click_btn: The bound method of MyButton.
         :return: None
         """
 
-        if button.is_mine:
+        if click_btn.is_mine:
             # If the cell has a mine "*" is printed on the cell.
-            button.config(text="*", disabledforeground="black")
+            click_btn.config(text="*", disabledforeground="black")
+        elif not click_btn.is_mine and click_btn.adjacent_mines_count != 0:
+            # Displaying the number of mines in the adjacent cells.
+            click_btn.config(
+                text=f"{click_btn.adjacent_mines_count}", disabledforeground="black"
+            )
         else:
-            # If the cell doesn't have a mine, the cell number is printed.
-            button.config(text=f"{button.number}", disabledforeground="black")
-        button.config(state="disable")
+            # Displaying an empty cell if there are no mines in the adjacent cells.
+            click_btn.config(text="")
+
+        # Freeze the clicked button (only one click is possible).
+        click_btn.config(state="disable")
+        # Sunkening the clicked button.
+        click_btn.config(relief=tk.SUNKEN)
 
 
 class MinesInstaller:
@@ -128,7 +167,8 @@ class MinesInstaller:
         buttons representation into the console for debugging purposes.
     """
 
-    def setting_mines(self, buttons):
+    @staticmethod
+    def setting_mines(buttons):
         """
         This function is used to randomly place mines on the minefield grid.
 
@@ -145,23 +185,3 @@ class MinesInstaller:
                 btn = btn_li[i][j]
                 if btn.number in num_li and btn.number != 0:
                     btn.is_mine = True
-
-        self.print_btn(buttons)
-
-    @staticmethod
-    def print_btn(buttons):
-        """
-        This function is used to print the tkinter buttons representation
-        into the console for debugging purposes.
-        :param buttons: The List of lists representing a grid of tkinter buttons.
-        :return: None
-        """
-        for row in buttons:
-            print(row)
-
-        print()
-
-        for row in buttons:
-            for btn in row:
-                if btn.is_mine:
-                    print(btn)

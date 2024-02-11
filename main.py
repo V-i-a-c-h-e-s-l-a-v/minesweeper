@@ -17,8 +17,10 @@ from gui import MineSweeperGui as Gui
 from config import WINDOW
 from settings import MenuBar as Menu
 from utils import MinesInstaller
-from utils import PrintAllButtons
+
+# from utils import PrintAllButtons
 from utils import MinesCalc
+from utils import BtnConsoleRepr
 
 
 # TODO: Скопировать в мэйн
@@ -39,14 +41,16 @@ class Game:
             Menu()
         )  # The class instance provides the application's menu interface.
         utils = MinesInstaller()
-        button_prnt = PrintAllButtons()
+        # button_prnt = PrintAllButtons()
         mines_num = MinesCalc()
+        print_into_console = BtnConsoleRepr()
 
         game_gui.create_widgets()
         game_menu.create_menu_bar()
         utils.setting_mines(game_gui.buttons)
         mines_num.mines_calc_init(game_gui.buttons)
-        button_prnt.print_all_buttons(game_gui.buttons)
+        # button_prnt.print_all_buttons(game_gui.buttons)
+        print_into_console.print_btn(game_gui.buttons)
 
         WINDOW.mainloop()
 
