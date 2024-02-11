@@ -16,7 +16,9 @@ Main module runs the following modules:
 from gui import MineSweeperGui as Gui
 from config import WINDOW
 from settings import MenuBar as Menu
-from utils import Utilities as Ut
+from utils import MinesInstaller
+from utils import PrintAllButtons
+from utils import MinesCalc
 
 
 # TODO: Скопировать в мэйн
@@ -36,10 +38,15 @@ class Game:
         game_menu = (
             Menu()
         )  # The class instance provides the application's menu interface.
-        utils = Ut()
+        utils = MinesInstaller()
+        button_prnt = PrintAllButtons()
+        mines_num = MinesCalc()
+
         game_gui.create_widgets()
         game_menu.create_menu_bar()
         utils.setting_mines(game_gui.buttons)
+        mines_num.mines_calc_init(game_gui.buttons)
+        button_prnt.print_all_buttons(game_gui.buttons)
 
         WINDOW.mainloop()
 
