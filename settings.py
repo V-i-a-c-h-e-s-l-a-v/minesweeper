@@ -7,11 +7,11 @@ import tkinter as tk
 from config import Config, WINDOW
 from gui import MineSweeperGui as Gui
 
-
-game_gui = Gui()
+# from utils import ReloadGame
 
 
 class MenuBar:
+    game_gui = Gui()
     """
     Class MenuBar is a base class to use widget Menu of Tkinter module.
 
@@ -61,17 +61,17 @@ class MenuBar:
         tk.Label(win_settings, text="Rows number:").grid(row=0, column=0)
         rows_entry = tk.Entry(win_settings)
         rows_entry.grid(row=0, column=1, padx=3, pady=3)
-        rows_entry.insert(0, Config.ROW)
+        rows_entry.insert(0, str(Config.ROW))
 
         tk.Label(win_settings, text="Columns number:").grid(row=1, column=0)
         columns_entry = tk.Entry(win_settings)
         columns_entry.grid(row=1, column=1, padx=3, pady=3)
-        columns_entry.insert(0, Config.COLUMN)
+        columns_entry.insert(0, str(Config.COLUMN))
 
         tk.Label(win_settings, text="Mines number:").grid(row=2, column=0)
         mines_entry = tk.Entry(win_settings)
         mines_entry.grid(row=2, column=1, padx=3, pady=3)
-        mines_entry.insert(0, Config.MINES)
+        mines_entry.insert(0, str(Config.MINES))
 
         tk.Button(win_settings, text="Cansel", command=win_settings.destroy).grid(
             row=3, column=0
@@ -91,9 +91,11 @@ class MenuBar:
             # Iterating through the objects of WINDOW to close them directly
             # using the destroy() method.
             child.destroy()
-        game_gui.__init__()  # Initialise the class MineSweeperGui again.
+        # ReloadGame.reload()
+
+        MenuBar.game_gui.__init__()  # Initialise the class MineSweeperGui again.
         self.__init__()  # Initialise the class MenuBar again.
-        game_gui.create_widgets()  # Creating the GUI widgets.
+        MenuBar.game_gui.create_widgets()  # Creating the GUI widgets.
         self.create_menu_bar()  # Creating the menu bar widgets.
 
     def create_menu_bar(self):

@@ -19,7 +19,8 @@ class Config:
 
     ROW: int = 5
     COLUMN: int = 5
-    MINES: int = 5
+    MINES: int = 3
+    BUTTONS = []
 
     def __repr__(self):
         """

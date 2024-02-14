@@ -5,12 +5,23 @@ Utils module is to implement all the logic for the game with classes:
 - MinesCalc,
 - Click,
 - MinesInstaller.
-
 """
 
 from random import shuffle
+from typing import Callable
+
+# from main import Game
+import gui
 from config import Config
 import tkinter as tk
+
+
+# class ReloadGame:
+#     START = Game()
+#
+#     @staticmethod
+#     def reload():
+#         ReloadGame.START.main()
 
 
 class BtnConsoleRepr:
@@ -99,6 +110,7 @@ class MinesCalc:
         count = 0
         for x in map(lambda el: i + el, dif):
             for y in map(lambda el: j + el, dif):
+                # TODO: The current cell must be outside the of the scope of check.
                 btn = buttons[x][y]
                 if btn.is_mine:
                     count += 1
@@ -114,46 +126,14 @@ class MinesCalc:
         :param buttons: The list of lists representing a grid of tkinter buttons.
         :return: None
         """
-        for i in range(1, Config.ROW + 2):
-            for j in range(Config.COLUMN + 2):
+        for i in range(1, Config.ROW + 1):
+            for j in range(Config.COLUMN + 1):
+                # TODO: There are cell position coordinates as attributes in
+                # the gui.MyButton class, aren't there?
                 btn = buttons[i][j]
-                if btn.number != 0:
-                    mines_num = self.nearest_cells_check(buttons, i, j)
-                    btn.adjacent_mines_count = mines_num
 
-
-class Click:
-    """
-    Class Click is to implement the handling of the button click.
-    Methods:
-        - get_click: Implement the click button commands.
-    """
-
-    @staticmethod
-    def get_click(click_btn):
-        """
-        Implement the click button commands.
-
-        :param click_btn: The bound method of MyButton.
-        :return: None
-        """
-
-        if click_btn.is_mine:
-            # If the cell has a mine "*" is printed on the cell.
-            click_btn.config(text="*", disabledforeground="black")
-        elif not click_btn.is_mine and click_btn.adjacent_mines_count != 0:
-            # Displaying the number of mines in the adjacent cells.
-            click_btn.config(
-                text=f"{click_btn.adjacent_mines_count}", disabledforeground="black"
-            )
-        else:
-            # Displaying an empty cell if there are no mines in the adjacent cells.
-            click_btn.config(text="")
-
-        # Freeze the clicked button (only one click is possible).
-        click_btn.config(state="disable")
-        # Sunkening the clicked button.
-        click_btn.config(relief=tk.SUNKEN)
+                mines_num = self.nearest_cells_check(buttons, i, j)
+                btn.adjacent_mines_count = mines_num
 
 
 class MinesInstaller:

@@ -9,10 +9,8 @@ import tkinter as tk
 from typing import Optional
 
 from config import Config, WINDOW
-from utils import Click
 
 
-click = Click()
 config = Config()
 # Provides the main window of the application
 # and contains the global variable values.
@@ -40,7 +38,7 @@ class MyButton(tk.Button):
     y: int
     number: int
     master: tk.Tk
-    adjacent_mines_count: Optional[int] = None
+    adjacent_mines_count: int
 
     def __init__(
         self,
@@ -67,7 +65,7 @@ class MyButton(tk.Button):
         self.y = y
         self.number = number
         self.adjacent_mines_count = adjacent_mines_count
-
+        self.is_open = False
         self.is_mine = False
 
     def __repr__(self):
@@ -75,7 +73,7 @@ class MyButton(tk.Button):
         Magic method.
         :return: Returns a new description of the class instance for debugging purposes.
         """
-        return f"Button_{self.number} {self.x} {self.y} {self.is_mine}"
+        return f"Button_{self.number} {self.x} {self.y} {self.is_mine} {self.adjacent_mines_count} {self.is_mine}"
 
 
 class MineSweeperGui:
@@ -88,8 +86,8 @@ class MineSweeperGui:
 
     """
 
-    buttons: list[list[tk.Button]]
     temp: list[MyButton]
+
     btn: tk.Button
 
     def __init__(self):
@@ -100,7 +98,10 @@ class MineSweeperGui:
             - buttons: The list of the cells on the minefield.
         """
 
-        self.buttons = []  # The list of lists representing a grid of tkinter buttons.
+        self.buttons = (
+            Config.BUTTONS
+        )  # The list of lists representing a grid of tkinter buttons.
+
         number = 1  # Counting the number of cells.
 
         for i in range(config.ROW + 2):
@@ -111,11 +112,11 @@ class MineSweeperGui:
                     i,
                     j,
                     number,
-                    adjacent_mines_count=None,
+                    adjacent_mines_count=0,
                     width=3,
                     font="Calibri 15 bold",
                 )
-                btn.config(command=lambda click_btn=btn: click.get_click(click_btn))
+
                 temp.append(btn)
                 if i in [0, config.ROW + 1] or j in [0, config.COLUMN + 1]:
                     btn.number = 0

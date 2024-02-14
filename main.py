@@ -14,9 +14,10 @@ Main module runs the following modules:
 """
 
 from gui import MineSweeperGui as Gui
-from config import WINDOW
+from config import Config, WINDOW
 from settings import MenuBar as Menu
 from utils import MinesInstaller
+from click_handling import ClickHandling
 
 # from utils import PrintAllButtons
 from utils import MinesCalc
@@ -37,6 +38,7 @@ class Game:
     @staticmethod
     def main():
         game_gui = Gui()  # The class instance provides the GUI of the application.
+
         game_menu = (
             Menu()
         )  # The class instance provides the application's menu interface.
@@ -44,13 +46,16 @@ class Game:
         # button_prnt = PrintAllButtons()
         mines_num = MinesCalc()
         print_into_console = BtnConsoleRepr()
+        click_bind = ClickHandling()
 
         game_gui.create_widgets()
         game_menu.create_menu_bar()
-        utils.setting_mines(game_gui.buttons)
-        mines_num.mines_calc_init(game_gui.buttons)
-        # button_prnt.print_all_buttons(game_gui.buttons)
-        print_into_console.print_btn(game_gui.buttons)
+        utils.setting_mines(Config.BUTTONS)
+        mines_num.mines_calc_init(Config.BUTTONS)
+
+        # button_prnt.print_all_buttons(Config.BUTTONS)
+        print_into_console.print_btn(Config.BUTTONS)
+        click_bind.btn_click_bind()
 
         WINDOW.mainloop()
 
