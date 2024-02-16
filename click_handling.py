@@ -3,10 +3,11 @@ import tkinter as tk
 from gui import MineSweeperGui, MyButton
 
 gui_btn = MineSweeperGui()
+cnfg = Config()
 
 
 class ClickHandling:
-    buttons = Config.BUTTONS
+    buttons = cnfg.BUTTONS
     """
     Class Click is to implement the handling of the button click.
     Methods:
@@ -14,9 +15,10 @@ class ClickHandling:
     """
 
     def btn_click_bind(self):
+        print(ClickHandling.buttons)
         for i in range(1, Config.ROW + 1):
             for j in range(1, Config.COLUMN + 1):
-                btn = ClickHandling.buttons[i][j]
+                btn = Config.BUTTONS[i][j]
                 btn.config(command=lambda click_btn=btn: self.get_click(click_btn))
 
     @staticmethod
@@ -51,7 +53,7 @@ class ClickHandling:
                         if not abs(dx - dy) == 1:
                             continue
 
-                        next_btn = ClickHandling.buttons[dx + current_btn.x][
+                        next_btn = Config.BUTTONS[dx + current_btn.x][
                             dy + current_btn.y
                         ]
                         # print(next_btn.__dict__)

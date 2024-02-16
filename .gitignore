@@ -2,4 +2,7 @@
 .venv/
 .gitignore/
 .flake8/
-.__pycache__/
+__pycache__/
+
+
+

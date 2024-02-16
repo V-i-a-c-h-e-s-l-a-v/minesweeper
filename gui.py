@@ -6,7 +6,6 @@ Gui modul provides GUI  for the application with classes:
 
 
 import tkinter as tk
-from typing import Optional
 
 from config import Config, WINDOW
 
@@ -86,9 +85,7 @@ class MineSweeperGui:
 
     """
 
-    temp: list[MyButton]
-
-    btn: tk.Button
+    CONFIG = Config()
 
     def __init__(self):
         """
@@ -98,9 +95,8 @@ class MineSweeperGui:
             - buttons: The list of the cells on the minefield.
         """
 
-        self.buttons = (
-            Config.BUTTONS
-        )  # The list of lists representing a grid of tkinter buttons.
+        self.buttons = MineSweeperGui.CONFIG.BUTTONS
+        # The list of lists representing a grid of tkinter buttons.
 
         number = 1  # Counting the number of cells.
 
@@ -131,10 +127,12 @@ class MineSweeperGui:
         """
         menubar = tk.Menu(WINDOW)
         WINDOW.config(menu=menubar)
+        btn_li = config.BUTTONS
+        print(btn_li)
 
         for i in range(1, config.ROW + 1):
             for j in range(1, config.COLUMN + 1):
-                btn = self.buttons[i][j]
+                btn = btn_li[i][j]
                 btn.grid(row=i, column=j, stick="WESN")
 
         for i in range(config.ROW):

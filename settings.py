@@ -5,13 +5,13 @@ Settings module allows the gamer to change the application settings with class M
 
 import tkinter as tk
 from config import Config, WINDOW
-from gui import MineSweeperGui as Gui
-
-# from utils import ReloadGame
+from game_reloader import GameReloader
 
 
 class MenuBar:
-    game_gui = Gui()
+    config = Config()
+
+    reloader = GameReloader()
     """
     Class MenuBar is a base class to use widget Menu of Tkinter module.
 
@@ -38,13 +38,15 @@ class MenuBar:
         - menubar: creates a menu bar in Tkinter application.
         """
         self.menubar = tk.Menu(WINDOW)
+        self.buttons = MenuBar.config.BUTTONS
+        self.reload = MenuBar.reloader
 
     def settings_apply(self, row, column, mines):
         """"""
         Config.ROW = int(row.get())
         Config.COLUMN = int(column.get())
         Config.MINES = int(mines.get())
-        self.reload()
+        self.reload.reload()
 
     def create_settings_win(self):
         """
@@ -82,22 +84,6 @@ class MenuBar:
             command=lambda: self.settings_apply(rows_entry, columns_entry, mines_entry),
         ).grid(row=3, column=1)
 
-    def reload(self):
-        """
-        Starting a new game by reloading the application GUI.
-        :return: None
-        """
-        for child in WINDOW.winfo_children():
-            # Iterating through the objects of WINDOW to close them directly
-            # using the destroy() method.
-            child.destroy()
-        # ReloadGame.reload()
-
-        MenuBar.game_gui.__init__()  # Initialise the class MineSweeperGui again.
-        self.__init__()  # Initialise the class MenuBar again.
-        MenuBar.game_gui.create_widgets()  # Creating the GUI widgets.
-        self.create_menu_bar()  # Creating the menu bar widgets.
-
     def create_menu_bar(self):
         """
         Creating a menu bar 'Menu' and provides such the settings menus as:
@@ -110,7 +96,10 @@ class MenuBar:
             menu=self.menubar
         )  # Configuring the menu of WINDOW to be self.menubar.
         settings_menu = tk.Menu(self.menubar)
-        settings_menu.add_command(label="New Game", command=self.reload)
+        settings_menu.add_command(label="New Game", command=self.reload_game)
         settings_menu.add_command(label="Settings", command=self.create_settings_win)
         settings_menu.add_command(label="Exit", command=WINDOW.destroy)
         self.menubar.add_cascade(label="Menu", menu=settings_menu)
+
+    def reload_game(self):
+        self.reload.reload()

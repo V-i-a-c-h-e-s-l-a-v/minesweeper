@@ -13,18 +13,13 @@ Main module runs the following modules:
 - settings: Allows the gamer to change the application settings.
 """
 
-from gui import MineSweeperGui as Gui
+from gui import MineSweeperGui
 from config import Config, WINDOW
 from settings import MenuBar as Menu
-from utils import MinesInstaller
 from click_handling import ClickHandling
-
-# from utils import PrintAllButtons
-from utils import MinesCalc
-from utils import BtnConsoleRepr
+from utils import MinesInstaller, MinesCalc, BtnConsoleRepr
 
 
-# TODO: Скопировать в мэйн
 class Game:
 
     """
@@ -37,7 +32,9 @@ class Game:
 
     @staticmethod
     def main():
-        game_gui = Gui()  # The class instance provides the GUI of the application.
+        game_gui = (
+            MineSweeperGui()
+        )  # The class instance provides the GUI of the application.
 
         game_menu = (
             Menu()
