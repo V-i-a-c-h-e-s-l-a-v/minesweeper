@@ -1,4 +1,3 @@
-# TODO: It should be checked again!
 """
     Minesweeper is a logic puzzle video game that runs on Windows PC.
 
@@ -25,12 +24,23 @@ from utils import MinesInstaller, MinesCalc, BtnConsoleRepr
 
 
 class Game:
-    # TODO: It should be checked again!
     """
         The Game class runs the methods from the modules mentioned above in
     a certain order to provide the player with the game experience.
 
     Methods:
+
+        - __init__: Construct class Game;
+        - main: Running the methods from the modules mentioned above in
+        a certain order to run the game functionality.
+
+    """
+
+    def __init__(self):
+        """
+        Construct class Game
+
+        Attributes:
         - CONFIG: Provides the instance of the class Confing from module confing
         used to provide the Tkinter base widget of the application and
         contains the global variable values;
@@ -47,26 +57,14 @@ class Game:
         - PRINT_INTO_CONSOLE: Provides the instance of the class BtnConsoleRepr
         is used to print the tkinter buttons representation
         into the console for debugging purposes;
-        - __init__: Construct class Game;
-        - main: Running the methods from the modules mentioned above in
-        a certain order to to run the game functionality.
 
-    """
-
-    def __init__(self):
+        """
         self.GUI = MineSweeperGui()
         self.MENU = MenuBar()
         self.CLICK = ClickHandling()
         self.MINES_INST = MinesInstaller()
         self.MINES_CALC = MinesCalc()
         self.PRINT_INTO_CONSOLE = BtnConsoleRepr
-
-    # def __init__(self):
-    #     """
-    #     Construct class Game.
-    #     """
-    #     self.window = Game.CONFIG.WINDOW
-    #     self.buttons = Game.CONFIG.BUTTONS
 
     def main(self):
         """

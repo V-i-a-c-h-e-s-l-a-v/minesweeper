@@ -1,4 +1,3 @@
-# TODO: It should be checked again!
 """
     The settings module allows a gamer to change the application settings
 with class MenuBar.
@@ -15,7 +14,7 @@ from game_reloader import GameReloader
 
 
 class MenuBar:
-    # TODO: It should be checked again!
+
     """
     Class MenuBar is a base class to use widget Menu of Tkinter module.
 
@@ -24,18 +23,15 @@ class MenuBar:
         - buttons: The list of lists representing a grid of tkinter buttons;
         - reload: Starting a new game by reloading the application GUI.
 
-    Methods:
-        - CONFIG: Provides the instance of the class Confing from module confing
-        used to provide the Tkinter base widget of the application and
-        contains the global variable values;
+    Attributes:
         - RELOAD: Starting a new game by reloading the application GUI;
+        Methods:
         - __init__: Construct the class MenuBar to crate menu 'Menu' of the
         application;
         - settings_apply: Implement the button 'Apply' functionality;
         - create_settings_win: Create the cascade window with a settings menu;
         - reload: Starting a new game by reloading the application GUI;
         - create_menu_bar: Creating a menu bar 'Menu'.
-
     """
 
     RELOADER = GameReloader()

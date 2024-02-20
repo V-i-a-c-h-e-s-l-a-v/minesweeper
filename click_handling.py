@@ -9,17 +9,15 @@ from gui import MineSweeperGui, MyButton
 
 class ClickHandling:
     """
-    The class Click is used for the button click event handling.
+    The class ClickHandling is used for the button click event handling.
     Methods:
         - get_click: Implement the click button commands.
+        - breadth_first_search: This method is used for
+        algorithmically searching all non-mined adjacent cells.
+        - get_click: Implement the clicked button commands
     """
 
     GUI = MineSweeperGui()
-
-    # def __init__(self):
-    #     self.buttons = ClickHandling.CONFIG.BUTTONS
-    #     self.rows = ClickHandling.CONFIG.ROW
-    #     self.columns = ClickHandling.CONFIG.COLUMN
 
     def btn_click_bind(self):
         for i in range(1, config.ROW + 1):
@@ -71,7 +69,7 @@ class ClickHandling:
 
     def get_click(self, click_btn: MyButton):
         """
-        Implement the click button commands.
+        Implement the clicked button commands.
 
         :param click_btn: The bound method of MyButton.
         :return: None

@@ -1,5 +1,6 @@
-# TODO: Add the all necessary annotations!
-
+"""
+     This module is used to provide the game reload functionality.
+"""
 import config
 from gui import MineSweeperGui
 from utils import MinesInstaller, MinesCalc, BtnConsoleRepr
@@ -7,19 +8,28 @@ from click_handling import ClickHandling
 
 
 class GameReloader:
-    GUI = MineSweeperGui()
+    """
+    The GameReloader class is used to provide the game reload functionality.
 
+    Attributes:
+        - GUI: Provides the instance of the class MineSweeperGui which is a
+        base class to use Tkinter widgets of the GUI;
+        - MINES_INIT: Provides the instance of the class MinesInstaller is used to
+         randomly place mines on the minefield grid;
+        - MINES_CALC: Provides the instance of the class MinesCalc  is used for
+         calculation the number of mines on the adjacent cells.
+        - CLICK_HANDLING: Provides the instance of the class ClickHandling is used
+         for the button click event handling.
+        - PRNT: Provides the instance of the class BtnConsoleRepr is used to print
+         the tkinter buttons representation into the console for debugging purposes.
+
+    """
+
+    GUI = MineSweeperGui()
     MINES_INIT = MinesInstaller()
     MINES_CALC = MinesCalc()
     CLICK_HANDLING = ClickHandling()
     PRNT = BtnConsoleRepr()
-
-    # def __init__(self):
-    #     self.game_gu
-    #     self.mines_installer = GameReloader.MINES_INIT.setting_mines()
-    #     self.adjacent_mines_count = GameReloader.MINES_CALC
-    #     self.click_handling = GameReloader.CLICK_HANDLING
-    #     self.prnt = GameReloader.PRNT
 
     @staticmethod
     def reload():
@@ -46,10 +56,10 @@ class GameReloader:
         menu.__init__()  # Initialise the class MenuBar again.
         print("Initialise the class MenuBar again")
 
-        GameReloader.GUI.create_widgets()  # Creating the GUI widgets.
+        GameReloader.GUI.create_widgets()
         print("Creating the GUI widgets")
 
-        menu.create_menu_bar()  # Creating the menu bar widgets.
+        menu.create_menu_bar()
         print("Creating the menu bar widgets")
 
         GameReloader.MINES_INIT.setting_mines(config.BUTTONS)
