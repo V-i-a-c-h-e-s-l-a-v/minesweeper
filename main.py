@@ -21,6 +21,7 @@ from config import WINDOW, BUTTONS
 from settings import MenuBar
 from click_handling import ClickHandling
 from utils import MinesInstaller, MinesCalc, BtnConsoleRepr
+from game_reloader import GameReloader
 
 
 class Game:
@@ -59,12 +60,13 @@ class Game:
         into the console for debugging purposes;
 
         """
-        self.GUI = MineSweeperGui()
-        self.MENU = MenuBar()
-        self.CLICK = ClickHandling()
-        self.MINES_INST = MinesInstaller()
-        self.MINES_CALC = MinesCalc()
-        self.PRINT_INTO_CONSOLE = BtnConsoleRepr
+        self.gui = MineSweeperGui()
+        self.click = ClickHandling()
+        self.mine_inst = MinesInstaller()
+        self.mines_calc = MinesCalc()
+        self.menu = MenuBar()
+        self.game_reloader = GameReloader(self.gui, self.mine_inst, self.mines_calc, self.click, self.menu)
+        self.menu.set_reloader(self.game_reloader)
 
     def main(self):
         """
@@ -73,15 +75,15 @@ class Game:
         :return: None
         """
 
-        self.GUI.create_widgets()
-        self.MENU.create_menu_bar()
+        self.gui.create_widgets()
+        self.menu.create_menu_bar()
 
-        self.MINES_INST.setting_mines(BUTTONS)
-        self.MINES_CALC.mines_calc_init(BUTTONS)
+        self.mine_inst.setting_mines(BUTTONS)
+        self.mines_calc.mines_calc_init(BUTTONS)
 
         # button_prnt.print_all_buttons(Config.BUTTONS)
-        self.PRINT_INTO_CONSOLE.print_btn(BUTTONS)
-        self.CLICK.btn_click_bind()
+        BtnConsoleRepr.print_btn(BUTTONS)
+        self.click.btn_click_bind()
         WINDOW.mainloop()
 
 

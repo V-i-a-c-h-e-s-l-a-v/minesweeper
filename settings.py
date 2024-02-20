@@ -10,7 +10,7 @@ with class MenuBar.
 
 import tkinter as tk
 import config
-from game_reloader import GameReloader
+from i_game_reloader import IGameReloader
 
 
 class MenuBar:
@@ -34,14 +34,14 @@ class MenuBar:
         - create_menu_bar: Creating a menu bar 'Menu'.
     """
 
-    RELOADER = GameReloader()
+    def set_reloader(self, reloader) -> None:
+        self.reloader = reloader
 
-    @staticmethod
-    def settings_apply(row, column, mines):
+    def settings_apply(self, row, column, mines):
         config.ROW = int(row.get())
         config.COLUMN = int(column.get())
         config.MINES = int(mines.get())
-        MenuBar.RELOADER.reload()
+        self.reloader.reload()
 
     def create_settings_win(self):
         """
@@ -70,7 +70,7 @@ class MenuBar:
         mines_entry.grid(row=2, column=1, padx=3, pady=3)
         mines_entry.insert(0, str(config.MINES))
 
-        tk.Button(win_settings, text="Cansel", command=win_settings.destroy).grid(
+        tk.Button(win_settings, text="Cancel", command=win_settings.destroy).grid(
             row=3, column=0
         )
         tk.Button(
@@ -97,6 +97,5 @@ class MenuBar:
         settings_menu.add_command(label="Exit", command=config.WINDOW.destroy)
         menu_bar.add_cascade(label="Menu", menu=settings_menu)
 
-    @staticmethod
-    def reload_game():
-        MenuBar.RELOADER.reload()
+    def reload_game(self):
+        self.reloader.reload()

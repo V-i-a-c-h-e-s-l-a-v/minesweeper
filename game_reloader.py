@@ -5,9 +5,11 @@ import config
 from gui import MineSweeperGui
 from utils import MinesInstaller, MinesCalc, BtnConsoleRepr
 from click_handling import ClickHandling
+from settings import MenuBar
+from i_game_reloader import IGameReloader
 
 
-class GameReloader:
+class GameReloader(IGameReloader):
     """
     The GameReloader class is used to provide the game reload functionality.
 
@@ -25,21 +27,22 @@ class GameReloader:
 
     """
 
-    GUI = MineSweeperGui()
-    MINES_INIT = MinesInstaller()
-    MINES_CALC = MinesCalc()
-    CLICK_HANDLING = ClickHandling()
-    PRNT = BtnConsoleRepr()
+    def __init__(self, gui, mines_init, mines_calc, click_handling, menu_bar) -> None:
+        self.gui = gui
+        self.mines_init = mines_init
+        self.mines_calc = mines_calc
+        self.click_handling = click_handling
+        self.menu_bar = menu_bar
 
-    @staticmethod
-    def reload():
+    def reload(self):
         """
         Starting a new game by reloading the application GUI.
         :return: None
         """
-        from settings import MenuBar
 
-        menu = MenuBar()
+        self.menu_bar = MenuBar()
+        print("Re-create the class MenuBar")
+
         config.BUTTONS = []
 
         print("Reloaded")
@@ -50,26 +53,23 @@ class GameReloader:
             child.destroy()
         # # ReloadGame.reload()
 
-        GameReloader.GUI.__init__()  # Initialise the class MineSweeperGui again.
-        print("Initialise the class MineSweeperGui again.")
+        self.gui = MineSweeperGui()
+        print("Re-create the class MineSweeperGui")
 
-        menu.__init__()  # Initialise the class MenuBar again.
-        print("Initialise the class MenuBar again")
-
-        GameReloader.GUI.create_widgets()
+        self.gui.create_widgets()
         print("Creating the GUI widgets")
 
-        menu.create_menu_bar()
+        self.menu_bar.create_menu_bar()
         print("Creating the menu bar widgets")
 
-        GameReloader.MINES_INIT.setting_mines(config.BUTTONS)
+        self.mines_init.setting_mines(config.BUTTONS)
         print("Mines are installed")
 
-        GameReloader.MINES_CALC.mines_calc_init(config.BUTTONS)
+        self.mines_calc.mines_calc_init(config.BUTTONS)
         print("Adjacent mines count is completed")
 
-        GameReloader.PRNT.print_btn(config.BUTTONS)
+        BtnConsoleRepr.print_btn(config.BUTTONS)
         print("Print the tkinter buttons representation")
 
-        GameReloader.CLICK_HANDLING.btn_click_bind()
+        self.click_handling.btn_click_bind()
         print("Click handling")

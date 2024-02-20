@@ -105,7 +105,8 @@ class MinesCalc:
                     pass
         return count
 
-    def mines_calc_init(self, buttons):
+    @staticmethod
+    def mines_calc_init(buttons):
         """
         The method is used to iterate through the cells to
         obtain their coordinates on the minefield grid, which are then sent
@@ -119,7 +120,7 @@ class MinesCalc:
                 # the gui.MyButton class, aren't there?
                 btn = buttons[i][j]
 
-                mines_num = self.nearest_cells_check(buttons, i, j)
+                mines_num = MinesCalc.nearest_cells_check(buttons, i, j)
                 btn.adjacent_mines_count = mines_num
 
 

@@ -17,16 +17,13 @@ class ClickHandling:
         - get_click: Implement the clicked button commands
     """
 
-    GUI = MineSweeperGui()
-
     def btn_click_bind(self):
         for i in range(1, config.ROW + 1):
             for j in range(1, config.COLUMN + 1):
                 btn = config.BUTTONS[i][j]
                 btn.config(command=lambda click_btn=btn: self.get_click(click_btn))
 
-    @staticmethod
-    def breadth_first_search(click_btn: MyButton):
+    def __breadth_first_search(self, click_btn: MyButton):
         btn_queue = [click_btn]
 
         while btn_queue:
@@ -91,7 +88,7 @@ class ClickHandling:
 
         else:
             # print(click_btn.__dict__)
-            self.breadth_first_search(click_btn)
+            self.__breadth_first_search(click_btn)
             # Click.search_res_prnt()
         # Freeze the clicked button (only one click is possible).
         click_btn.config(state="disabled")
