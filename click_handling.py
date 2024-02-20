@@ -1,24 +1,30 @@
-from config import Config
-import tkinter as tk
-from gui import MineSweeperGui, MyButton
+"""
+The click_handling module is used to handle the button click event.
+"""
 
-gui_btn = MineSweeperGui()
-cnfg = Config()
+import tkinter as tk
+import config
+from gui import MineSweeperGui, MyButton
 
 
 class ClickHandling:
-    buttons = cnfg.BUTTONS
     """
-    Class Click is to implement the handling of the button click.
+    The class Click is used for the button click event handling.
     Methods:
         - get_click: Implement the click button commands.
     """
 
+    GUI = MineSweeperGui()
+
+    # def __init__(self):
+    #     self.buttons = ClickHandling.CONFIG.BUTTONS
+    #     self.rows = ClickHandling.CONFIG.ROW
+    #     self.columns = ClickHandling.CONFIG.COLUMN
+
     def btn_click_bind(self):
-        print(ClickHandling.buttons)
-        for i in range(1, Config.ROW + 1):
-            for j in range(1, Config.COLUMN + 1):
-                btn = Config.BUTTONS[i][j]
+        for i in range(1, config.ROW + 1):
+            for j in range(1, config.COLUMN + 1):
+                btn = config.BUTTONS[i][j]
                 btn.config(command=lambda click_btn=btn: self.get_click(click_btn))
 
     @staticmethod
@@ -26,7 +32,6 @@ class ClickHandling:
         btn_queue = [click_btn]
 
         while btn_queue:
-            print(btn_queue)
             current_btn = btn_queue.pop()
 
             if current_btn.adjacent_mines_count != 0:
@@ -53,10 +58,10 @@ class ClickHandling:
                         if not abs(dx - dy) == 1:
                             continue
 
-                        next_btn = Config.BUTTONS[dx + current_btn.x][
+                        next_btn = config.BUTTONS[dx + current_btn.x][
                             dy + current_btn.y
                         ]
-                        # print(next_btn.__dict__)
+
                         if (
                             not next_btn.is_open
                             and next_btn.number != 0

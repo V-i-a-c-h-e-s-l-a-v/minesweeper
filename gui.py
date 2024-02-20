@@ -1,5 +1,5 @@
 """
-Gui modul provides GUI  for the application with classes:
+Gui modul provides GUI for the application with classes:
 - MyButton,
 - MineSweeper Gui.
 """
@@ -7,12 +7,8 @@ Gui modul provides GUI  for the application with classes:
 
 import tkinter as tk
 
-from config import Config, WINDOW
-
-
-config = Config()
-# Provides the main window of the application
-# and contains the global variable values.
+# import gui
+import config
 
 
 class MyButton(tk.Button):
@@ -28,11 +24,12 @@ class MyButton(tk.Button):
         - number: The position coordinate of the cell,
         - adjacent_mines_count: The number of mines on the adjacent cells.
     Methods:
-        -__init__: Construct subclass MyButton based on the superclass tk.Button,
+        -__init__: Construct subclass MyButton based on the superclass tk.Button;
         -__repr__: Returns a new description of the class instance for
         debugging purposes.
     """
 
+    # The used type annotations.
     x: int
     y: int
     number: int
@@ -70,7 +67,8 @@ class MyButton(tk.Button):
     def __repr__(self):
         """
         Magic method.
-        :return: Returns a new description of the class instance for debugging purposes.
+        :return: Returns a new description of the class instance for
+        debugging purposes.
         """
         return f"Button_{self.number} {self.x} {self.y} {self.is_mine} {self.adjacent_mines_count} {self.is_mine}"
 
@@ -80,23 +78,30 @@ class MineSweeperGui:
     MineSweeperGui is a base class to use Tkinter widgets of the GUI.
 
     Methods:
-        - __init__: Construct class MineSweeperGui,
-        - create_widgets: create Tkinter widgets,
+        - CONFIG: Provides the instance of class Confing from module confing
+        used to provide the Tkinter base widget of the application and contains
+        the global variable values.;
+        - __init__: Construct class MineSweeperGui;
+        - create_widgets: create Tkinter widgets.
 
     """
-
-    CONFIG = Config()
 
     def __init__(self):
         """
         Construct class MineSweeperGui.
 
+
         Attributes:
-            - buttons: The list of the cells on the minefield.
+        - buttons: The list of lists representing a grid of tkinter buttons;
+        - rows: The number of rows in the minefield;
+        - columns: The number of rows in the minefield;
+        - window: Tkinter base widget.
         """
 
-        self.buttons = MineSweeperGui.CONFIG.BUTTONS
-        # The list of lists representing a grid of tkinter buttons.
+        # self.buttons = MineSweeperGui.CONFIG.BUTTONS
+        # self.rows = MineSweeperGui.CONFIG.ROW
+        # self.columns = MineSweeperGui.CONFIG.COLUMN
+        # self.window = MineSweeperGui.CONFIG.WINDOW
 
         number = 1  # Counting the number of cells.
 
@@ -104,7 +109,7 @@ class MineSweeperGui:
             temp = []  # List representing the grid row of tkinter buttons.
             for j in range(config.COLUMN + 2):
                 btn = MyButton(
-                    WINDOW,
+                    config.WINDOW,
                     i,
                     j,
                     number,
@@ -112,32 +117,39 @@ class MineSweeperGui:
                     width=3,
                     font="Calibri 15 bold",
                 )
-
                 temp.append(btn)
-                if i in [0, config.ROW + 1] or j in [0, config.COLUMN + 1]:
+                # The two cell types should determine the position coordinate
+                # of the cell:
+                # - The first one is a border cell, which gets coordinate zero;
+                # - The second one is a non-border cell, which gets it own number.
+                # The first type of cell always does not have a mine, but the
+                # second type of cell may or may not be mined.
+                if i in [0, config.ROW + 1] or j in [
+                    0,
+                    config.COLUMN + 1,
+                ]:
                     btn.number = 0
                 else:
                     number += 1
-            self.buttons.append(temp)
+            config.BUTTONS.append(temp)
 
-    def create_widgets(self):
+    @staticmethod
+    def create_widgets():
         """
         Create Tkinter widgets.
         :return: None
         """
-        menubar = tk.Menu(WINDOW)
-        WINDOW.config(menu=menubar)
-        btn_li = config.BUTTONS
-        print(btn_li)
+        menubar = tk.Menu(config.WINDOW)
+        config.WINDOW.config(menu=menubar)
 
         for i in range(1, config.ROW + 1):
             for j in range(1, config.COLUMN + 1):
-                btn = btn_li[i][j]
+                btn = config.BUTTONS[i][j]
                 btn.grid(row=i, column=j, stick="WESN")
 
+        # Fixing the bug of the cell size by setting the proportional weight
+        # of the rows and columns.
         for i in range(config.ROW):
-            # Fixing the bug of the cells size by setting the proportional weight
-            # of the rows and columns.
-            tk.Grid.rowconfigure(WINDOW, i, weight=1)
+            tk.Grid.rowconfigure(config.WINDOW, i, weight=1)
         for j in range(config.COLUMN):
-            tk.Grid.columnconfigure(WINDOW, j, weight=1)
+            tk.Grid.columnconfigure(config.WINDOW, j, weight=1)

@@ -8,20 +8,7 @@ Utils module is to implement all the logic for the game with classes:
 """
 
 from random import shuffle
-from typing import Callable
-
-# from main import Game
-import gui
-from config import Config
-import tkinter as tk
-
-
-# class ReloadGame:
-#     START = Game()
-#
-#     @staticmethod
-#     def reload():
-#         ReloadGame.START.main()
+import config
 
 
 class BtnConsoleRepr:
@@ -39,11 +26,11 @@ class BtnConsoleRepr:
         """
         This function is used to print the tkinter buttons representation
         into the console for debugging purposes.
-        :param buttons: The List of lists representing a grid of tkinter buttons.
+        :param buttons: The List of lists represents a grid of tkinter buttons.
         :return: None
         """
-        for i in range(1, Config.ROW + 1):
-            for j in range(1, Config.COLUMN + 1):
+        for i in range(1, config.ROW + 1):
+            for j in range(1, config.COLUMN + 1):
                 btn = buttons[i][j]
                 if btn.is_mine:
                     print("M", end="")
@@ -65,13 +52,13 @@ class PrintAllButtons:
     @staticmethod
     def print_all_buttons(buttons):
         """
-        Method is used to display the content of all Tkinter buttons
-        (cells) of the game GUI for debugging purposes.
-        :param buttons: The list of lists representing a grid of tkinter buttons.
+        Method is used to display the content all Tkinter buttons (cells)
+        of the game GUI for debugging purposes.
+        :param buttons: The list of lists represents a grid of tkinter buttons.
         :return: None
         """
-        for i in range(Config.ROW + 2):
-            for j in range(Config.COLUMN + 2):
+        for i in range(config.ROW + 2):
+            for j in range(config.COLUMN + 2):
                 btn = buttons[i][j]
                 if btn.is_mine:
                     btn.config(text="*", disabledforeground="black")
@@ -92,7 +79,7 @@ class MinesCalc:
         - nearest_cells_check: The method is used to count how many mines are
         on the adjacent cells.
         - mines_calc_init: The method is used to iterate through the cells to
-        obtain their coordinates on the minefield grid , which are then sent
+        obtain their coordinates on the minefield grid, which are then sent
         to the 'nearest_cells_check' method.
     """
 
@@ -104,7 +91,7 @@ class MinesCalc:
         :param buttons: The list of lists representing a grid of tkinter buttons,
         :param i: The row number of the minefield grid,
         :param j: The column number of the minefield grid.
-        :return: How many mines are on the adjacent cells.
+        :return: Value of how many mines are on the adjacent cells.
         """
         dif = [-1, 0, 1]  # It is used to obtain the coordinates of adjacent cells.
         count = 0
@@ -121,13 +108,13 @@ class MinesCalc:
     def mines_calc_init(self, buttons):
         """
         The method is used to iterate through the cells to
-        obtain their coordinates on the minefield grid , which are then sent
+        obtain their coordinates on the minefield grid, which are then sent
         to the 'nearest_cells_check' method.
-        :param buttons: The list of lists representing a grid of tkinter buttons.
+        :param buttons: The list of lists represents a grid of tkinter buttons.
         :return: None
         """
-        for i in range(1, Config.ROW + 1):
-            for j in range(Config.COLUMN + 1):
+        for i in range(1, config.ROW + 1):
+            for j in range(config.COLUMN + 1):
                 # TODO: There are cell position coordinates as attributes in
                 # the gui.MyButton class, aren't there?
                 btn = buttons[i][j]
@@ -152,16 +139,16 @@ class MinesInstaller:
         """
         This function is used to randomly place mines on the minefield grid.
 
-        :param buttons: The List of lists representing a grid of tkinter buttons.
+        :param buttons: The List of lists represents a grid of tkinter buttons.
         :return: None
         """
         btn_li = buttons
-        num_li = [num for num in range(1, (Config.ROW * Config.COLUMN))]
+        num_li = [num for num in range(1, (config.ROW * config.COLUMN))]
         shuffle(num_li)
-        num_li = num_li[: Config.MINES]
+        num_li = num_li[: config.MINES]
 
-        for i in range(1, Config.ROW + 2):
-            for j in range(Config.COLUMN + 2):
+        for i in range(1, config.ROW + 2):
+            for j in range(config.COLUMN + 2):
                 btn = btn_li[i][j]
                 if btn.number in num_li and btn.number != 0:
                     btn.is_mine = True
