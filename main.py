@@ -15,7 +15,7 @@ and contains the global variable values;
 - click_handling: Handling the click event of any buttons or menu labels;
 - utils: The Utils module is used to implement the game logic.
 """
-
+from game_reloader import GameReloader
 from gui import MineSweeperGui
 from config import WINDOW, BUTTONS
 from settings import MenuBar
@@ -59,12 +59,15 @@ class Game:
         into the console for debugging purposes;
 
         """
+
         self.GUI = MineSweeperGui()
-        self.MENU = MenuBar()
+
         self.CLICK = ClickHandling()
         self.MINES_INST = MinesInstaller()
         self.MINES_CALC = MinesCalc()
         self.PRINT_INTO_CONSOLE = BtnConsoleRepr
+        self.reloader = GameReloader()
+        self.MENU = MenuBar(self.reloader)
 
     def main(self):
         """

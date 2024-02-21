@@ -25,11 +25,12 @@ class GameReloader:
 
     """
 
-    GUI = MineSweeperGui()
-    MINES_INIT = MinesInstaller()
-    MINES_CALC = MinesCalc()
-    CLICK_HANDLING = ClickHandling()
-    PRNT = BtnConsoleRepr()
+    def __init__(self):
+        self.gui = MineSweeperGui()
+        self.mines_init = MinesInstaller()
+        self.mines_calc = MinesCalc()
+        self.click_handling = ClickHandling()
+        self.prnt = BtnConsoleRepr()
 
     @staticmethod
     def reload():

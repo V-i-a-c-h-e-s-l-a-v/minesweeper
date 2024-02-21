@@ -34,14 +34,14 @@ class MenuBar:
         - create_menu_bar: Creating a menu bar 'Menu'.
     """
 
-    RELOADER = GameReloader()
+    def __init__(self, reloader):
+        self.reloader = reloader
 
-    @staticmethod
-    def settings_apply(row, column, mines):
+    def settings_apply(self, row, column, mines):
         config.ROW = int(row.get())
         config.COLUMN = int(column.get())
         config.MINES = int(mines.get())
-        MenuBar.RELOADER.reload()
+        self.reloader.reload()
 
     def create_settings_win(self):
         """
@@ -97,6 +97,5 @@ class MenuBar:
         settings_menu.add_command(label="Exit", command=config.WINDOW.destroy)
         menu_bar.add_cascade(label="Menu", menu=settings_menu)
 
-    @staticmethod
-    def reload_game():
-        MenuBar.RELOADER.reload()
+    def reload_game(self):
+        self.reloader.reload()
