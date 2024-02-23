@@ -1,55 +1,71 @@
 """
     The settings module allows a gamer to change the application settings
-with class MenuBar.
+using the MenuBar class functionality.
     This module uses the functionality of the following modules:
     - config: Provides the main the Tkinter base widget of the application
     and contains the global variable values;
-    - game_reloader: Starting the new game by reloading the application GUI.
+    - i_game_reloader: Inheritance-based solution to a cyclic import problem pattern.
 """
 
 
 import tkinter as tk
 import config
-from game_reloader import GameReloader
+from i_game_reloader import IGameReloader
 
 
 class MenuBar:
 
     """
-    Class MenuBar is a base class to use widget Menu of Tkinter module.
+        Class MenuBar is a base class to use widget Menu of Tkinter module.
 
     Attributes:
-        - menubar: Creating a menu bar using Tkinter widgets;
-        - buttons: The list of lists representing a grid of tkinter buttons;
-        - reload: Starting a new game by reloading the application GUI.
-
-    Attributes:
-        - RELOAD: Starting a new game by reloading the application GUI;
-        Methods:
-        - __init__: Construct the class MenuBar to crate menu 'Menu' of the
-        application;
+        - reloader: The instance of the IGameReloader class (default value None);
+    Methods:
+        - __init__: Construct the class MenuBar;
+        - set_reloader: Provide the instance of the IGameReloader class;
         - settings_apply: Implement the button 'Apply' functionality;
         - create_settings_win: Create the cascade window with a settings menu;
-        - reload: Starting a new game by reloading the application GUI;
+
         - create_menu_bar: Creating a menu bar 'Menu'.
+        - reload_game: Running the new session of the game.
     """
 
-    def __init__(self, reloader):
+    def __init__(self):
+        """
+        Construct the class MenuBar.
+        """
+        self.reloader = None
+
+    def set_reloader(self, reloader: IGameReloader) -> None:
+        """
+            Provide the instance of the IGameReloader class.
+        :param reloader: The instance of the IGameReloader class.
+        :return: None
+        """
         self.reloader = reloader
 
-    def settings_apply(self, row, column, mines):
+    def settings_apply(self, row: tk.Entry, column: tk.Entry, mines: tk.Entry) -> None:
+        """
+            Implements the functionality of the 'Apply' button, which is used
+        to apply a new game settings.
+        :param row: The number of minefield grid rows;
+        :param column: The number of minefield grid columns;
+        :param mines: The number of mines on the minefield grid.
+        :return: None
+        """
         config.ROW = int(row.get())
         config.COLUMN = int(column.get())
         config.MINES = int(mines.get())
         self.reloader.reload()
 
-    def create_settings_win(self):
+    def create_settings_win(self) -> None:
         """
-        Create the cascade window with the following settings menus:
-        - Rows number,
-        - Columns number,
-        - Mines number,
-        - Cansel.
+        Create the cascade window with the following settings menu:
+        - Rows number;
+        - Columns number;
+        - Mines number;
+        - Cancel;
+        - Apply.
         :return: None
         """
         win_settings = tk.Toplevel(config.WINDOW)
@@ -70,7 +86,7 @@ class MenuBar:
         mines_entry.grid(row=2, column=1, padx=3, pady=3)
         mines_entry.insert(0, str(config.MINES))
 
-        tk.Button(win_settings, text="Cansel", command=win_settings.destroy).grid(
+        tk.Button(win_settings, text="Cancel", command=win_settings.destroy).grid(
             row=3, column=0
         )
         tk.Button(
@@ -79,15 +95,15 @@ class MenuBar:
             command=lambda: self.settings_apply(rows_entry, columns_entry, mines_entry),
         ).grid(row=3, column=1)
 
-    def create_menu_bar(self):
+    def create_menu_bar(self) -> None:
         """
-        Creating a menu bar 'Menu' and provides such the settings menus as:
-        - New Game,
-        - Settings,
+        Creating a menu bar 'Menu' with the following options:
+        - New Game;
+        - Settings;
         - Exit.
         :return: None
         """
-        menu_bar = tk.Menu(config.WINDOW)  # tk.Menu(MenuBar.CONFIG.WINDOW)
+        menu_bar = tk.Menu(config.WINDOW)
         config.WINDOW.config(
             menu=menu_bar
         )  # Configuring the menu of WINDOW to be menu_bar.
@@ -98,4 +114,8 @@ class MenuBar:
         menu_bar.add_cascade(label="Menu", menu=settings_menu)
 
     def reload_game(self):
+        """
+        Running the new session of the game.
+        :return: None
+        """
         self.reloader.reload()

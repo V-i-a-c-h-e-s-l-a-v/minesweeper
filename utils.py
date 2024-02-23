@@ -1,5 +1,5 @@
 """
-Utils module is to implement all the logic for the game with classes:
+Utils module is used to implement all the logic for the game with classes:
 - BtnConsoleRepr,
 - PrintAllButtons,
 - MinesCalc,
@@ -14,18 +14,18 @@ import config
 class BtnConsoleRepr:
     """
     The BtnConsoleRepr class is used to print the tkinter buttons representation
-    into the console for debugging purposes.
+    into the console for the debugging purposes.
 
     Methods:
         - print_btn(buttons): This function is used to print the tkinter buttons
-         representation into the console for debugging purposes.
+         representation into the console for the debugging purposes.
     """
 
     @staticmethod
-    def print_btn(buttons):
+    def print_btn(buttons) -> None:
         """
         This function is used to print the tkinter buttons representation
-        into the console for debugging purposes.
+        into the console for the debugging purposes.
         :param buttons: The List of lists represents a grid of tkinter buttons.
         :return: None
         """
@@ -137,7 +137,7 @@ class MinesInstaller:
     @staticmethod
     def setting_mines(buttons):
         """
-        This function is used to randomly place mines on the minefield grid.
+        This function is used to randomly place the mines on the minefield grid.
 
         :param buttons: The List of lists represents a grid of tkinter buttons.
         :return: None
