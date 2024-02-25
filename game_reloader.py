@@ -1,6 +1,8 @@
 """
      This module is used to provide the game reload functionality.
 """
+import threading
+
 import config
 from gui import MineSweeperGui
 from utils import MinesInstaller, MinesCalc, BtnConsoleRepr
@@ -8,6 +10,7 @@ from click_handling import ClickHandling
 from i_game_reloader import IGameReloader
 from settings import MenuBar
 from timer import Timer
+from threading import Thread
 
 
 class GameReloader(IGameReloader):
@@ -42,6 +45,8 @@ class GameReloader(IGameReloader):
         mines_calc: MinesCalc,
         click_handling: ClickHandling,
         prnt: BtnConsoleRepr,
+        timer: Timer,
+        thread_1: Thread,
     ):
         """
         Construct class GameReloader.
@@ -59,6 +64,12 @@ class GameReloader(IGameReloader):
         self.mines_calc = mines_calc
         self.click_handling = click_handling
         self.prnt = prnt
+        self.timer = timer
+        self.timer = Timer(self.gui, config.TIME_PRESET)
+        self.thread_1 = thread_1
+
+    def thread_control(self) -> bool:
+        return self.thread_1.is_alive()
 
     def reload(self) -> None:
         """
@@ -67,6 +78,8 @@ class GameReloader(IGameReloader):
         """
 
         config.BUTTONS = []
+        if self.thread_control():
+            self.timer.flag = True
 
         print("Reloaded")
         for child in config.WINDOW.winfo_children():
@@ -83,9 +96,6 @@ class GameReloader(IGameReloader):
 
         self.gui.create_button_widgets()
         print("Creating the button widgets")
-
-        self.gui.create_timer_bar(config.TIME_PRESET)
-        print("Creating the timer bar widget")
 
         self.gui.create_mines_left_bar(config.MINES_LEFT)
         print("Creating the mines left bar widget")
@@ -104,3 +114,8 @@ class GameReloader(IGameReloader):
 
         self.click_handling.btn_click_bind()
         print("Click handling")
+        self.gui.create_timer_bar(config.TIME_PRESET)
+        self.thread_1 = threading.Thread(target=self.timer.start)
+        self.thread_1.start()
+        self.gui.create_timer_bar(config.TIME_PRESET)
+        print("Creating the timer bar widget")

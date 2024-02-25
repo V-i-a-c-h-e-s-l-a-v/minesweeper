@@ -30,12 +30,6 @@ class MenuBar:
         - reload_game: Running the new session of the game.
     """
 
-    # def __init__(self):
-    #     """
-    #     Construct the class MenuBar.
-    #     """
-    #     self.reloader = None
-
     def set_reloader(self, reloader: IGameReloader) -> None:
         """
             Provide the instance of the IGameReloader class.
