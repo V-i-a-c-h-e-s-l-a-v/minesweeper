@@ -7,7 +7,7 @@ Gui modul provides GUI for the application with classes:
 
 import tkinter as tk
 
-# import gui
+
 import config
 
 
@@ -82,7 +82,7 @@ class MineSweeperGui:
         used to provide the Tkinter base widget of the application and contains
         the global variable values.;
         - __init__: Construct class MineSweeperGui;
-        - create_widgets: create Tkinter widgets.
+        - create_widgets: create Tkinter button widgets.
 
     """
 
@@ -104,6 +104,7 @@ class MineSweeperGui:
         # self.window = MineSweeperGui.CONFIG.WINDOW
 
         number = 1  # Counting the number of cells.
+        self.timer = None
 
         for i in range(config.ROW + 2):
             temp = []  # List representing the grid row of tkinter buttons.
@@ -134,13 +135,13 @@ class MineSweeperGui:
             config.BUTTONS.append(temp)
 
     @staticmethod
-    def create_widgets():
+    def create_button_widgets() -> None:
         """
-        Create Tkinter widgets.
+        Create Tkinter button widgets.
         :return: None
         """
-        menubar = tk.Menu(config.WINDOW)
-        config.WINDOW.config(menu=menubar)
+        # menubar = tk.Menu(config.WINDOW)
+        # config.WINDOW.config(menu=menubar)
 
         for i in range(1, config.ROW + 1):
             for j in range(1, config.COLUMN + 1):
@@ -149,7 +150,24 @@ class MineSweeperGui:
 
         # Fixing the bug of the cell size by setting the proportional weight
         # of the rows and columns.
-        for i in range(config.ROW):
+        for i in range(1, config.ROW + 1):
             tk.Grid.rowconfigure(config.WINDOW, i, weight=1)
-        for j in range(config.COLUMN):
+        for j in range(1, config.COLUMN + 1):
             tk.Grid.columnconfigure(config.WINDOW, j, weight=1)
+        tk.Grid.rowconfigure(config.WINDOW, config.ROW + 2, weight=1)
+
+    def create_timer_bar(self, time) -> None:
+        timer_bar = tk.Label(config.WINDOW)
+        timer_bar.grid(row=config.ROW + 1, column=0, columnspan=3)
+        self.timer = tk.Label(timer_bar, text=f"Time: {time}", font="Arial 10")
+        self.timer.grid(row=0, column=0)
+
+    @staticmethod
+    def create_mines_left_bar(mines_num):
+        mines_left_bar = tk.Label(config.WINDOW)
+        mines_left_bar.grid(row=config.ROW + 1, column=3, columnspan=2)
+
+        mines_left = tk.Label(
+            mines_left_bar, text=f"Mines: {mines_num}", font="Arial 10"
+        )
+        mines_left.grid(row=0, column=1)

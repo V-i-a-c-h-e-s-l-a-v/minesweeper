@@ -14,7 +14,7 @@ class ClickHandling:
         - get_click: Implement the click button commands.
         - breadth_first_search: This method is used for
         algorithmically searching all non-mined adjacent cells.
-        - get_click: Implement the clicked button commands
+        - get_click: Implement the click button commands
     """
 
     GUI = MineSweeperGui()
@@ -53,10 +53,10 @@ class ClickHandling:
                 # It is used to obtain the coordinates of adjacent cells.
                 for dx in [-1, 0, 1]:
                     for dy in [-1, 0, 1]:
-                        if not abs(dx - dy) == 1:
-                            continue
+                        # if not abs(dx - dy) == 1:
+                        #     continue
 
-                        next_btn = config.BUTTONS[dx + current_btn.x][
+                        next_btn: MyButton = config.BUTTONS[dx + current_btn.x][
                             dy + current_btn.y
                         ]
 

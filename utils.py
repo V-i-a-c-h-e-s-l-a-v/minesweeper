@@ -84,6 +84,10 @@ class MinesCalc:
     """
 
     @staticmethod
+    def get_num_mines_remaining():
+        return "4"
+
+    @staticmethod
     def nearest_cells_check(buttons, i: int, j: int):
         """
         The method is used to count how many mines are

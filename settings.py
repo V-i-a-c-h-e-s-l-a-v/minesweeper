@@ -30,11 +30,11 @@ class MenuBar:
         - reload_game: Running the new session of the game.
     """
 
-    def __init__(self):
-        """
-        Construct the class MenuBar.
-        """
-        self.reloader = None
+    # def __init__(self):
+    #     """
+    #     Construct the class MenuBar.
+    #     """
+    #     self.reloader = None
 
     def set_reloader(self, reloader: IGameReloader) -> None:
         """
@@ -56,7 +56,7 @@ class MenuBar:
         config.ROW = int(row.get())
         config.COLUMN = int(column.get())
         config.MINES = int(mines.get())
-        self.reloader.reload()
+        self.reload_game()
 
     def create_settings_win(self) -> None:
         """
@@ -117,5 +117,6 @@ class MenuBar:
         """
         Running the new session of the game.
         :return: None
+
         """
         self.reloader.reload()

@@ -7,6 +7,7 @@ from utils import MinesInstaller, MinesCalc, BtnConsoleRepr
 from click_handling import ClickHandling
 from i_game_reloader import IGameReloader
 from settings import MenuBar
+from timer import Timer
 
 
 class GameReloader(IGameReloader):
@@ -80,8 +81,14 @@ class GameReloader(IGameReloader):
         self.menu.__init__()  # Initialise the class MenuBar again.
         print("Initialise the class MenuBar again")
 
-        self.gui.create_widgets()
-        print("Creating the GUI widgets")
+        self.gui.create_button_widgets()
+        print("Creating the button widgets")
+
+        self.gui.create_timer_bar(config.TIME_PRESET)
+        print("Creating the timer bar widget")
+
+        self.gui.create_mines_left_bar(config.MINES_LEFT)
+        print("Creating the mines left bar widget")
 
         self.menu.create_menu_bar()
         print("Creating the menu bar widgets")

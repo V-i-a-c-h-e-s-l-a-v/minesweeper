@@ -16,12 +16,14 @@ and contains the global variable values;
 - utils: The Utils module is used to implement the game logic;
 - game_reloader: This module is used to provide the game reload functionality.
 """
+import config
 from game_reloader import GameReloader
 from gui import MineSweeperGui
 from config import WINDOW, BUTTONS
 from settings import MenuBar
 from click_handling import ClickHandling
 from utils import MinesInstaller, MinesCalc, BtnConsoleRepr
+from timer import Timer
 
 
 class Game:
@@ -61,6 +63,7 @@ class Game:
         self.mines_init = MinesInstaller()
         self.mines_calc = MinesCalc()
         self.prnt = BtnConsoleRepr()
+        self.timer = Timer(self.gui, config.TIME_PRESET)
 
         self.game_reloader = GameReloader(
             self.gui,
@@ -79,10 +82,14 @@ class Game:
         :return: None
         """
 
-        self.gui.create_widgets()
+        self.gui.create_button_widgets()
+        self.gui.create_timer_bar(config.TIME_PRESET)
+        self.gui.create_mines_left_bar(config.MINES_LEFT)
+
         self.menu.create_menu_bar()
 
         self.mines_init.setting_mines(BUTTONS)
+        self.timer.start()
         self.mines_calc.mines_calc_init(BUTTONS)
 
         # button_prnt.print_all_buttons(Config.BUTTONS)
