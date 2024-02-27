@@ -5,7 +5,7 @@ import threading
 
 import config
 from gui import MineSweeperGui
-from utils import MinesInstaller, MinesCalc, BtnConsoleRepr
+from utils import MinesInstaller, MinesCalc, BtnConsoleRepr, ExitHandling
 from click_handling import ClickHandling
 from i_game_reloader import IGameReloader
 from settings import MenuBar
@@ -65,11 +65,12 @@ class GameReloader(IGameReloader):
         self.click_handling = click_handling
         self.prnt = prnt
         self.timer = timer
-        self.timer = Timer(self.gui, config.TIME_PRESET)
         self.thread_1 = thread_1
+        self.thread_2 = None
+        self.exit_handling = ExitHandling(self.thread_1, self.timer)
 
-    def thread_control(self) -> bool:
-        return self.thread_1.is_alive()
+    # def thread_control(self) -> bool:
+    #     return self.thread_1.is_alive()
 
     def reload(self) -> None:
         """
@@ -78,8 +79,9 @@ class GameReloader(IGameReloader):
         """
 
         config.BUTTONS = []
-        if self.thread_control():
-            self.timer.flag = True
+
+        self.timer.flag = True
+        self.thread_1.join()
 
         print("Reloaded")
         for child in config.WINDOW.winfo_children():
@@ -100,7 +102,7 @@ class GameReloader(IGameReloader):
         self.gui.create_mines_left_bar(config.MINES_LEFT)
         print("Creating the mines left bar widget")
 
-        self.menu.create_menu_bar()
+        self.menu.create_menu_bar(self.exit_handling)
         print("Creating the menu bar widgets")
 
         self.mines_init.setting_mines(config.BUTTONS)
@@ -115,7 +117,8 @@ class GameReloader(IGameReloader):
         self.click_handling.btn_click_bind()
         print("Click handling")
         self.gui.create_timer_bar(config.TIME_PRESET)
-        self.thread_1 = threading.Thread(target=self.timer.start)
-        self.thread_1.start()
-        self.gui.create_timer_bar(config.TIME_PRESET)
         print("Creating the timer bar widget")
+        self.timer.flag = False
+        self.thread_2 = threading.Thread(target=self.timer.start)
+        self.thread_2.start()
+        print(threading.enumerate())

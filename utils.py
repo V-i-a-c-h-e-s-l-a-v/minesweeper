@@ -9,6 +9,20 @@ Utils module is used to implement all the logic for the game with classes:
 
 from random import shuffle
 import config
+from threading import Thread
+from timer import Timer
+
+
+class ExitHandling:
+    def __init__(self, thread: Thread, timer: Timer):
+        self.thread = thread
+        self.timer = timer
+        self.window = config.WINDOW
+
+    def exit(self):
+        self.timer.flag = True
+        self.thread.join()
+        self.window.destroy()
 
 
 class BtnConsoleRepr:

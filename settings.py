@@ -11,6 +11,9 @@ using the MenuBar class functionality.
 import tkinter as tk
 import config
 from i_game_reloader import IGameReloader
+from utils import ExitHandling
+from threading import Thread
+from timer import Timer
 
 
 class MenuBar:
@@ -89,7 +92,9 @@ class MenuBar:
             command=lambda: self.settings_apply(rows_entry, columns_entry, mines_entry),
         ).grid(row=3, column=1)
 
-    def create_menu_bar(self) -> None:
+    def create_menu_bar(self, exit: ExitHandling) -> None:
+        self.exit = exit
+
         """
         Creating a menu bar 'Menu' with the following options:
         - New Game;
@@ -104,7 +109,7 @@ class MenuBar:
         settings_menu = tk.Menu(menu_bar)
         settings_menu.add_command(label="New Game", command=self.reload_game)
         settings_menu.add_command(label="Settings", command=self.create_settings_win)
-        settings_menu.add_command(label="Exit", command=config.WINDOW.destroy)
+        settings_menu.add_command(label="Exit", command=lambda: self.exit.exit())
         menu_bar.add_cascade(label="Menu", menu=settings_menu)
 
     def reload_game(self):

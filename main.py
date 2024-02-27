@@ -22,7 +22,7 @@ from gui import MineSweeperGui
 from config import WINDOW, BUTTONS
 from settings import MenuBar
 from click_handling import ClickHandling
-from utils import MinesInstaller, MinesCalc, BtnConsoleRepr
+from utils import MinesInstaller, MinesCalc, BtnConsoleRepr, ExitHandling
 from timer import Timer
 import threading
 
@@ -66,7 +66,7 @@ class Game:
         self.mines_init = MinesInstaller()
         self.mines_calc = MinesCalc()
         self.prnt = BtnConsoleRepr()
-        self.timer = Timer(self.gui, config.TIME_PRESET)
+        self.timer = Timer(self.gui)
         self.thread_1 = threading.Thread(target=self.timer.start)
 
         self.game_reloader = GameReloader(
@@ -80,6 +80,7 @@ class Game:
             self.thread_1,
         )
         self.menu.set_reloader(self.game_reloader)
+        self.exit_handling = ExitHandling(self.thread_1, self.timer)
 
     def main(self):
         """
@@ -89,7 +90,7 @@ class Game:
         """
 
         self.gui.create_button_widgets()
-        self.menu.create_menu_bar()
+        self.menu.create_menu_bar(self.exit_handling)
         self.mines_init.setting_mines(BUTTONS)
 
         self.mines_calc.mines_calc_init(BUTTONS)
@@ -99,7 +100,6 @@ class Game:
         self.click_handling.btn_click_bind()
         self.gui.create_timer_bar(config.TIME_PRESET)
         self.thread_1.start()
-        print(self.thread_1.is_alive())
 
         self.gui.create_mines_left_bar(config.MINES_LEFT)
         WINDOW.mainloop()
