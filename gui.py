@@ -159,7 +159,7 @@ class MineSweeperGui:
     def create_timer_bar(self, time) -> None:
         timer_bar = tk.Label(config.WINDOW)
         timer_bar.grid(row=config.ROW + 1, column=0, columnspan=3)
-        self.timer = tk.Label(timer_bar, text=f"Time: {time}", font="Arial 10")
+        self.timer = tk.Label(timer_bar, text=f"{time}", font="Arial 10")
         self.timer.grid(row=0, column=0)
 
     @staticmethod

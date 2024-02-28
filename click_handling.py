@@ -5,6 +5,7 @@ The click_handling module is used to handle the button click event.
 import tkinter as tk
 import config
 from gui import MineSweeperGui, MyButton
+from timer import Timer
 
 
 class ClickHandling:
@@ -18,6 +19,9 @@ class ClickHandling:
     """
 
     GUI = MineSweeperGui()
+
+    def __init__(self, timer: Timer):
+        self.timer = timer
 
     def btn_click_bind(self):
         for i in range(1, config.ROW + 1):
@@ -74,6 +78,10 @@ class ClickHandling:
         :param click_btn: The bound method of MyButton.
         :return: None
         """
+        # Freeze the clicked button (only one click is possible).
+        click_btn.config(state="disabled")
+        # Make the clicked button is sunken.
+        click_btn.config(relief=tk.SUNKEN)
 
         if click_btn.is_mine:
             # print(click_btn.__dict__)
@@ -81,6 +89,8 @@ class ClickHandling:
 
             click_btn.config(text="*", disabledforeground="black")
             click_btn.is_open = True
+            self.timer.timer_thread_launch()
+
         elif not click_btn.is_mine and click_btn.adjacent_mines_count != 0:
             # print(click_btn.__dict__)
             # Displaying the number of mines in the adjacent cells.
@@ -88,12 +98,9 @@ class ClickHandling:
                 text=f"{click_btn.adjacent_mines_count}", disabledforeground="black"
             )
             click_btn.is_open = True
+            self.timer.timer_thread_launch()
 
         else:
             # print(click_btn.__dict__)
             self.breadth_first_search(click_btn)
-            # Click.search_res_prnt()
-        # Freeze the clicked button (only one click is possible).
-        click_btn.config(state="disabled")
-        # Make the clicked button is sunken.
-        click_btn.config(relief=tk.SUNKEN)
+            self.timer.timer_thread_launch()

@@ -1,7 +1,7 @@
 """
      This module is used to provide the game reload functionality.
 """
-import threading
+
 
 import config
 from gui import MineSweeperGui
@@ -10,7 +10,7 @@ from click_handling import ClickHandling
 from i_game_reloader import IGameReloader
 from settings import MenuBar
 from timer import Timer
-from threading import Thread
+import threading
 
 
 class GameReloader(IGameReloader):
@@ -46,7 +46,6 @@ class GameReloader(IGameReloader):
         click_handling: ClickHandling,
         prnt: BtnConsoleRepr,
         timer: Timer,
-        thread_1: Thread,
     ):
         """
         Construct class GameReloader.
@@ -65,9 +64,8 @@ class GameReloader(IGameReloader):
         self.click_handling = click_handling
         self.prnt = prnt
         self.timer = timer
-        self.thread_1 = thread_1
-        self.thread_2 = None
-        self.exit_handling = ExitHandling(self.thread_1, self.timer)
+
+        self.exit_handling = ExitHandling(self.timer)
 
     # def thread_control(self) -> bool:
     #     return self.thread_1.is_alive()
@@ -79,9 +77,6 @@ class GameReloader(IGameReloader):
         """
 
         config.BUTTONS = []
-
-        self.timer.flag = True
-        self.thread_1.join()
 
         print("Reloaded")
         for child in config.WINDOW.winfo_children():
@@ -118,7 +113,4 @@ class GameReloader(IGameReloader):
         print("Click handling")
         self.gui.create_timer_bar(config.TIME_PRESET)
         print("Creating the timer bar widget")
-        self.timer.flag = False
-        self.thread_2 = threading.Thread(target=self.timer.start)
-        self.thread_2.start()
-        print(threading.enumerate())
+        self.timer.timer_thread_relaunch()

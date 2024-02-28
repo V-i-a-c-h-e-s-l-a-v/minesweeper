@@ -14,14 +14,13 @@ from timer import Timer
 
 
 class ExitHandling:
-    def __init__(self, thread: Thread, timer: Timer):
-        self.thread = thread
+    def __init__(self, timer: Timer):
         self.timer = timer
         self.window = config.WINDOW
 
     def exit(self):
         self.timer.flag = True
-        self.thread.join()
+
         self.window.destroy()
 
 

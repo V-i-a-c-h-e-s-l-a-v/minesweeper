@@ -92,8 +92,8 @@ class MenuBar:
             command=lambda: self.settings_apply(rows_entry, columns_entry, mines_entry),
         ).grid(row=3, column=1)
 
-    def create_menu_bar(self, exit: ExitHandling) -> None:
-        self.exit = exit
+    def create_menu_bar(self, for_exit: ExitHandling) -> None:
+        self.for_exit = for_exit
 
         """
         Creating a menu bar 'Menu' with the following options:
@@ -109,7 +109,7 @@ class MenuBar:
         settings_menu = tk.Menu(menu_bar)
         settings_menu.add_command(label="New Game", command=self.reload_game)
         settings_menu.add_command(label="Settings", command=self.create_settings_win)
-        settings_menu.add_command(label="Exit", command=lambda: self.exit.exit())
+        settings_menu.add_command(label="Exit", command=lambda: self.for_exit.exit())
         menu_bar.add_cascade(label="Menu", menu=settings_menu)
 
     def reload_game(self):
