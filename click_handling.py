@@ -89,7 +89,7 @@ class ClickHandling:
 
             click_btn.config(text="*", disabledforeground="black")
             click_btn.is_open = True
-            self.timer.timer_thread_launch()
+            self.timer.timer_restart()
 
         elif not click_btn.is_mine and click_btn.adjacent_mines_count != 0:
             # print(click_btn.__dict__)
@@ -98,9 +98,9 @@ class ClickHandling:
                 text=f"{click_btn.adjacent_mines_count}", disabledforeground="black"
             )
             click_btn.is_open = True
-            self.timer.timer_thread_launch()
+            self.timer.timer_restart()
 
         else:
             # print(click_btn.__dict__)
             self.breadth_first_search(click_btn)
-            self.timer.timer_thread_launch()
+            self.timer.timer_restart()

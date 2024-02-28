@@ -89,14 +89,12 @@ class Game:
         self.gui.create_button_widgets()
         self.menu.create_menu_bar(self.exit_handling)
         self.mines_init.setting_mines(BUTTONS)
-
         self.mines_calc.mines_calc_init(BUTTONS)
-
         # button_prnt.print_all_buttons(Config.BUTTONS)
         self.prnt.print_btn(BUTTONS)
         self.click_handling.btn_click_bind()
-        self.gui.create_timer_bar(config.TIME_PRESET)
-        self.timer.timer_thread_launch()
+        self.gui.create_timer_bar()
+        self.timer.timer_launch()
         # self.gui.create_mines_left_bar(config.MINES_LEFT)
         WINDOW.mainloop()
 

@@ -156,10 +156,10 @@ class MineSweeperGui:
             tk.Grid.columnconfigure(config.WINDOW, j, weight=1)
         tk.Grid.rowconfigure(config.WINDOW, config.ROW + 2, weight=1)
 
-    def create_timer_bar(self, time) -> None:
+    def create_timer_bar(self) -> None:
         timer_bar = tk.Label(config.WINDOW)
         timer_bar.grid(row=config.ROW + 1, column=0, columnspan=3)
-        self.timer = tk.Label(timer_bar, text=f"{time}", font="Arial 10")
+        self.timer = tk.Label(timer_bar, text="", font="Arial 10")
         self.timer.grid(row=0, column=0)
 
     @staticmethod

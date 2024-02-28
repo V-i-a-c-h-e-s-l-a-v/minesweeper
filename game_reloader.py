@@ -111,6 +111,5 @@ class GameReloader(IGameReloader):
 
         self.click_handling.btn_click_bind()
         print("Click handling")
-        self.gui.create_timer_bar(config.TIME_PRESET)
-        print("Creating the timer bar widget")
-        self.timer.timer_thread_relaunch()
+        self.gui.create_timer_bar()
+        self.timer.timer_restart()

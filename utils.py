@@ -20,7 +20,6 @@ class ExitHandling:
 
     def exit(self):
         self.timer.flag = True
-
         self.window.destroy()
 
 
