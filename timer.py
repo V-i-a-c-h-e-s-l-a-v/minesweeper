@@ -1,39 +1,34 @@
-import threading
-import time
 import config
 from gui import MineSweeperGui
-from threading import Thread
 
 
 class Timer:
     def __init__(self, gui: MineSweeperGui):
-        self.time_preset = config.TIME_PRESET
         self.gui = gui
         self.flag = False
-        self.thread: Thread | None = None
 
-    def timer_thread_launch(self):
-        self.thread = Thread(target=self.timer_thread)
-        self.timer_thread()
-
-    def timer_thread_relaunch(self):
-        print("Launch")
-        self.time_preset = config.TIME_PRESET
+    def timer_restart(self):
         self.flag = True
-        # self.thread.join()
+        self.gui.timer.destroy()
+        self.gui.create_timer_bar()
         self.flag = False
-        self.thread = None
-        self.timer_thread_launch()
+        self.timer_launch()
 
-    def timer_thread(self):
-        duration = self.time_preset
-        while duration and not self.flag:
-            m, s = divmod(int(duration), 60)
-            min_sec_format = f"{m:02d}:{s:02d}"
-            self.gui.timer.config(text=f"Time: {min_sec_format}")
-            # self.gui.timer["text"] = f"Time: {min_sec_format}"
-            self.gui.timer.update()
-            time.sleep(1)
-            duration -= 1
+    def timer_countdown(self, duration):
+        if duration > 0 and not self.flag:
+            self.gui.timer.after(
+                0, self.timer_label_config, Timer.time_format(duration)
+            )
+            self.gui.timer.after(1000, self.timer_countdown, duration - 1)
 
-        # print(self.thread.is_alive())
+    def timer_launch(self):
+        self.timer_label_config(self.time_format(config.TIME_PRESET))
+        self.timer_countdown(config.TIME_PRESET)
+
+    def timer_label_config(self, time_value: str):
+        self.gui.timer.config(text=time_value)
+
+    @staticmethod
+    def time_format(seconds):
+        m, s = divmod(int(seconds), 60)
+        return f"Time:{m:02d}:{s:02d}"
