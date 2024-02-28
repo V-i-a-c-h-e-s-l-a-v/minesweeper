@@ -20,7 +20,8 @@ class ClickHandling:
 
     GUI = MineSweeperGui()
 
-    def __init__(self, timer: Timer):
+    def __init__(self, gui: MineSweeperGui, timer: Timer):
+        self.gui = gui
         self.timer = timer
 
     def btn_click_bind(self):
@@ -28,6 +29,23 @@ class ClickHandling:
             for j in range(1, config.COLUMN + 1):
                 btn = config.BUTTONS[i][j]
                 btn.config(command=lambda click_btn=btn: self.get_click(click_btn))
+                btn.bind("<Button-3>", self.right_click_handling)
+
+    def right_click_handling(self, event):
+        cur_btn: MyButton = event.widget
+        if cur_btn["state"] == "normal":
+            cur_btn["state"] = "disabled"
+            cur_btn["text"] = "🚩"
+            config.MINES_LEFT -= 1
+            self.gui.mines_left_label.destroy()
+            self.gui.create_mines_left_bar(config.MINES_LEFT)
+
+        elif cur_btn["text"] == "🚩":
+            cur_btn["text"] = ""
+            cur_btn["state"] = "normal"
+            config.MINES_LEFT += 1
+            self.gui.mines_left_label.destroy()
+            self.gui.create_mines_left_bar(config.MINES_LEFT)
 
     @staticmethod
     def breadth_first_search(click_btn: MyButton):

@@ -6,8 +6,6 @@ Gui modul provides GUI for the application with classes:
 
 
 import tkinter as tk
-
-
 import config
 
 
@@ -104,7 +102,8 @@ class MineSweeperGui:
         # self.window = MineSweeperGui.CONFIG.WINDOW
 
         number = 1  # Counting the number of cells.
-        self.timer = None
+        self.timer_label = None
+        self.mines_left_label = None
 
         for i in range(config.ROW + 2):
             temp = []  # List representing the grid row of tkinter buttons.
@@ -157,17 +156,11 @@ class MineSweeperGui:
         tk.Grid.rowconfigure(config.WINDOW, config.ROW + 2, weight=1)
 
     def create_timer_bar(self) -> None:
-        timer_bar = tk.Label(config.WINDOW)
-        timer_bar.grid(row=config.ROW + 1, column=0, columnspan=3)
-        self.timer = tk.Label(timer_bar, text="", font="Arial 10")
-        self.timer.grid(row=0, column=0)
+        self.timer_label = tk.Label(config.WINDOW, text="", font="Arial 10")
+        self.timer_label.grid(row=config.ROW + 1, column=0, columnspan=3)
 
-    @staticmethod
-    def create_mines_left_bar(mines_num):
-        mines_left_bar = tk.Label(config.WINDOW)
-        mines_left_bar.grid(row=config.ROW + 1, column=3, columnspan=2)
-
-        mines_left = tk.Label(
-            mines_left_bar, text=f"Mines: {mines_num}", font="Arial 10"
+    def create_mines_left_bar(self, mines_left: int):
+        self.mines_left_label = tk.Label(
+            config.WINDOW, text=f"Mines: {mines_left}", font="Arial 10"
         )
-        mines_left.grid(row=0, column=1)
+        self.mines_left_label.grid(row=config.ROW + 1, column=3, columnspan=2)
