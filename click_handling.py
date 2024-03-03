@@ -34,7 +34,8 @@ class ClickHandling:
 
     def right_click_handling(self, event):
         cur_btn: MyButton = event.widget
-        if cur_btn["state"] == "normal":
+
+        if cur_btn["state"] == "normal" and config.MINES_LEFT > 0:
             cur_btn["state"] = "disabled"
             cur_btn["text"] = "🚩"
             config.MINES_LEFT -= 1

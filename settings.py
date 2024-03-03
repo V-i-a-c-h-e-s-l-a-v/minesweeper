@@ -9,6 +9,7 @@ using the MenuBar class functionality.
 
 
 import tkinter as tk
+from tkinter.messagebox import showinfo
 import config
 from i_game_reloader import IGameReloader
 from utils import ExitHandling
@@ -52,16 +53,20 @@ class MenuBar:
         """
             Implements the functionality of the 'Apply' button, which is used
         to apply a new game settings.
+        :param time_preset_entry:
         :param row: The number of minefield grid rows;
         :param column: The number of minefield grid columns;
         :param mines: The number of mines on the minefield grid.
         :return: None
         """
-        config.ROW = int(row.get())
-        config.COLUMN = int(column.get())
-        config.MINES = int(mines.get())
-        config.TIME_PRESET = int(time_preset_entry.get())
-        self.reload_game()
+        try:
+            config.ROW = int(row.get())
+            config.COLUMN = int(column.get())
+            config.MINES = int(mines.get())
+            config.TIME_PRESET = int(time_preset_entry.get())
+            self.reload_game()
+        except ValueError:
+            showinfo("ValueError!", "Integers only!")
 
     def create_settings_win(self) -> None:
         """
