@@ -18,7 +18,7 @@ and contains the global variable values;
 """
 import config
 from game_reloader import GameReloader
-from gui import MineSweeperGui
+from gui import MineSweeperGui, MyButton
 from config import WINDOW, BUTTONS
 from settings import MenuBar
 from click_handling import ClickHandling
@@ -58,6 +58,7 @@ class Game:
         """
 
         self.gui = MineSweeperGui()
+
         self.menu = MenuBar()
 
         self.mines_init = MinesInstaller()
@@ -65,7 +66,7 @@ class Game:
         self.prnt = BtnConsoleRepr()
         self.timer = Timer(self.gui)
 
-        self.click_handling = ClickHandling(self.timer)
+        self.click_handling = ClickHandling(self.gui, self.timer)
 
         self.game_reloader = GameReloader(
             self.gui,
@@ -95,7 +96,7 @@ class Game:
         self.click_handling.btn_click_bind()
         self.gui.create_timer_bar()
         self.timer.timer_launch()
-        # self.gui.create_mines_left_bar(config.MINES_LEFT)
+        self.gui.create_mines_left_bar(config.MINES)
         WINDOW.mainloop()
 
 
