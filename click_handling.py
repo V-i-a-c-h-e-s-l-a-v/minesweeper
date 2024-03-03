@@ -3,6 +3,7 @@ The click_handling module is used to handle the button click event.
 """
 
 import tkinter as tk
+from tkinter.messagebox import showinfo
 import config
 from gui import MineSweeperGui, MyButton
 from timer import Timer
@@ -99,15 +100,35 @@ class ClickHandling:
         # Freeze the clicked button (only one click is possible).
         click_btn.config(state="disabled")
         # Make the clicked button is sunken.
-        click_btn.config(relief=tk.SUNKEN)
+        if not click_btn.is_mine:
+            click_btn.config(relief=tk.SUNKEN)
 
         if click_btn.is_mine:
             # print(click_btn.__dict__)
             # If the cell has a mine "*" is printed on the cell.
-
-            click_btn.config(text="*", disabledforeground="black")
             click_btn.is_open = True
-            self.timer.timer_restart()
+            click_btn.config(
+                text="*",
+                disabledforeground="black",
+                state="disabled",
+            )
+            self.timer.flag = True
+            for i in range(1, config.ROW + 1):
+                for j in range(1, config.COLUMN + 1):
+                    btn = config.BUTTONS[i][j]
+                    if btn.is_mine:
+                        btn.config(
+                            text="*",
+                            disabledforeground="black",
+                            state="disabled",
+                        )
+                    else:
+                        btn.config(
+                            text=f"{btn.adjacent_mines_count}",
+                            state="disabled",
+                            relief=tk.SUNKEN,
+                        )
+            showinfo("Game over!", "Game over!")
 
         elif not click_btn.is_mine and click_btn.adjacent_mines_count != 0:
             # print(click_btn.__dict__)
