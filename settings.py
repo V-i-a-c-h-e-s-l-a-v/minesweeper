@@ -12,8 +12,6 @@ import tkinter as tk
 import config
 from i_game_reloader import IGameReloader
 from utils import ExitHandling
-from threading import Thread
-from timer import Timer
 
 
 class MenuBar:
@@ -33,6 +31,9 @@ class MenuBar:
         - reload_game: Running the new session of the game.
     """
 
+    def __init__(self):
+        self.for_exit = None
+
     def set_reloader(self, reloader: IGameReloader) -> None:
         """
             Provide the instance of the IGameReloader class.
@@ -41,7 +42,13 @@ class MenuBar:
         """
         self.reloader = reloader
 
-    def settings_apply(self, row: tk.Entry, column: tk.Entry, mines: tk.Entry) -> None:
+    def settings_apply(
+        self,
+        row: tk.Entry,
+        column: tk.Entry,
+        mines: tk.Entry,
+        time_preset_entry: tk.Entry,
+    ) -> None:
         """
             Implements the functionality of the 'Apply' button, which is used
         to apply a new game settings.
@@ -53,6 +60,7 @@ class MenuBar:
         config.ROW = int(row.get())
         config.COLUMN = int(column.get())
         config.MINES = int(mines.get())
+        config.TIME_PRESET = int(time_preset_entry.get())
         self.reload_game()
 
     def create_settings_win(self) -> None:
@@ -83,14 +91,21 @@ class MenuBar:
         mines_entry.grid(row=2, column=1, padx=3, pady=3)
         mines_entry.insert(0, str(config.MINES))
 
+        tk.Label(win_settings, text="Timer preset:").grid(row=3, column=0)
+        time_preset_entry = tk.Entry(win_settings)
+        time_preset_entry.grid(row=3, column=1, padx=3, pady=3)
+        time_preset_entry.insert(0, str(config.TIME_PRESET))
+
         tk.Button(win_settings, text="Cancel", command=win_settings.destroy).grid(
-            row=3, column=0
+            row=4, column=0
         )
         tk.Button(
             win_settings,
             text="Apply",
-            command=lambda: self.settings_apply(rows_entry, columns_entry, mines_entry),
-        ).grid(row=3, column=1)
+            command=lambda: self.settings_apply(
+                rows_entry, columns_entry, mines_entry, time_preset_entry
+            ),
+        ).grid(row=4, column=1)
 
     def create_menu_bar(self, for_exit: ExitHandling) -> None:
         self.for_exit = for_exit
