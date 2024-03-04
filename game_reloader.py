@@ -41,10 +41,7 @@ class GameReloader(IGameReloader):
         self,
         gui: MineSweeperGui,
         menu: MenuBar,
-        mines_init: MinesInstaller,
-        mines_calc: MinesCalc,
         click_handling: ClickHandling,
-        prnt: BtnConsoleRepr,
         timer: Timer,
     ):
         """
@@ -59,12 +56,8 @@ class GameReloader(IGameReloader):
         """
         self.gui = gui
         self.menu = menu
-        self.mines_init = mines_init
-        self.mines_calc = mines_calc
         self.click_handling = click_handling
-        self.prnt = prnt
         self.timer = timer
-
         self.exit_handling = ExitHandling(self.timer)
 
     # def thread_control(self) -> bool:
@@ -94,20 +87,11 @@ class GameReloader(IGameReloader):
         self.gui.create_button_widgets()
         print("Creating the button widgets")
 
-        self.gui.create_mines_left_bar(config.MINES_LEFT)
+        self.gui.create_mines_left_bar(config.MINES)
         print("Creating the mines left bar widget")
 
         self.menu.create_menu_bar(self.exit_handling)
         print("Creating the menu bar widgets")
-
-        self.mines_init.setting_mines(config.BUTTONS)
-        print("Mines are installed")
-
-        self.mines_calc.mines_calc_init(config.BUTTONS)
-        print("Adjacent mines count is completed")
-
-        self.prnt.print_btn(config.BUTTONS)
-        print("Print the tkinter buttons representation")
 
         self.click_handling.btn_click_bind()
         print("Click handling")

@@ -66,15 +66,18 @@ class Game:
         self.prnt = BtnConsoleRepr()
         self.timer = Timer(self.gui)
 
-        self.click_handling = ClickHandling(self.gui, self.timer)
+        self.click_handling = ClickHandling(
+            self.gui,
+            self.mines_init,
+            self.mines_calc,
+            self.prnt,
+            self.timer,
+        )
 
         self.game_reloader = GameReloader(
             self.gui,
             self.menu,
-            self.mines_init,
-            self.mines_calc,
             self.click_handling,
-            self.prnt,
             self.timer,
         )
         self.menu.set_reloader(self.game_reloader)
@@ -89,10 +92,10 @@ class Game:
 
         self.gui.create_button_widgets()
         self.menu.create_menu_bar(self.exit_handling)
-        self.mines_init.setting_mines(BUTTONS)
-        self.mines_calc.mines_calc_init(BUTTONS)
+        # self.mines_init.setting_mines(BUTTONS)
+        # self.mines_calc.mines_calc_init(BUTTONS)
         # button_prnt.print_all_buttons(Config.BUTTONS)
-        self.prnt.print_btn(BUTTONS)
+        # self.prnt.print_btn(BUTTONS)
         self.click_handling.btn_click_bind()
         self.gui.create_timer_bar()
         self.timer.timer_launch()
