@@ -8,6 +8,7 @@ import config
 from gui import MineSweeperGui, MyButton
 from timer import Timer
 import utils
+from end_game_handler import AllCellShow
 
 
 class ClickHandling:
@@ -28,20 +29,27 @@ class ClickHandling:
         mines_init: utils.MinesInstaller,
         mines_calc: utils.MinesCalc,
         prnt: utils.BtnConsoleRepr,
+        show_all_cell: AllCellShow,
         timer: Timer,
     ):
         self.gui = gui
         self.mines_init = mines_init
         self.mines_calc = mines_calc
         self.prnt = prnt
+        self.show_all_cell = show_all_cell
         self.timer = timer
+        self.first_click_done = False
 
     def minefield_init(self, click_btn: MyButton):
-        click_btn_number = click_btn.number
-        self.mines_init.setting_mines(config.BUTTONS, click_btn_number)
-        self.mines_calc.mines_calc_init(config.BUTTONS)
-        self.prnt.print_btn(config.BUTTONS)
-        self.left_click_handling(click_btn)
+        if not self.first_click_done:
+            click_btn_number = click_btn.number
+            self.mines_init.setting_mines(config.BUTTONS, click_btn_number)
+            self.mines_calc.mines_calc_init(config.BUTTONS)
+            self.prnt.print_btn(config.BUTTONS)
+            self.left_click_handling(click_btn)
+            self.first_click_done = True
+        else:
+            self.left_click_handling(click_btn)
 
     def btn_click_bind(self):
         for i in range(1, config.ROW + 1):
@@ -67,27 +75,13 @@ class ClickHandling:
             # print(click_btn.__dict__)
             # If the cell has a mine "*" is printed on the cell.
             click_btn.is_open = True
+            self.timer.flag = True
             click_btn.config(
                 text="*",
                 disabledforeground="black",
                 state="disabled",
             )
-            self.timer.flag = True
-            for i in range(1, config.ROW + 1):
-                for j in range(1, config.COLUMN + 1):
-                    btn = config.BUTTONS[i][j]
-                    if btn.is_mine:
-                        btn.config(
-                            text="*",
-                            disabledforeground="black",
-                            state="disabled",
-                        )
-                    else:
-                        btn.config(
-                            text=f"{btn.adjacent_mines_count}",
-                            state="disabled",
-                            relief=tk.SUNKEN,
-                        )
+            self.show_all_cell.show_all_cell(config.BUTTONS)
             showinfo("Game over!", "Game over!")
 
         elif not click_btn.is_mine and click_btn.adjacent_mines_count != 0:

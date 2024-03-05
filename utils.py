@@ -9,7 +9,6 @@ Utils module is used to implement all the logic for the game with classes:
 
 from random import shuffle
 import config
-from threading import Thread
 from timer import Timer
 from gui import MyButton
 
