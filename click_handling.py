@@ -88,7 +88,8 @@ class ClickHandling:
             # print(click_btn.__dict__)
             # Displaying the number of mines in the adjacent cells.
             click_btn.config(
-                text=f"{click_btn.adjacent_mines_count}", disabledforeground="black"
+                text=f"{click_btn.adjacent_mines_count}",
+                disabledforeground=f"{config.COLORS_PRESET[click_btn.adjacent_mines_count]}",
             )
             click_btn.is_open = True
             self.timer.timer_restart()
@@ -124,7 +125,8 @@ class ClickHandling:
 
             if current_btn.adjacent_mines_count != 0:
                 current_btn.config(
-                    text=current_btn.adjacent_mines_count, disabledforeground="black"
+                    text=current_btn.adjacent_mines_count,
+                    disabledforeground=f"{config.COLORS_PRESET[current_btn.adjacent_mines_count]}",
                 )
 
                 # Freeze the clicked button (only one click is possible).
