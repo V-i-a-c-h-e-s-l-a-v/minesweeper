@@ -9,8 +9,8 @@ Utils module is used to implement all the logic for the game with classes:
 
 from random import shuffle
 import config
-from threading import Thread
 from timer import Timer
+from gui import MyButton
 
 
 class ExitHandling:
@@ -150,21 +150,29 @@ class MinesInstaller:
         buttons representation into the console for debugging purposes.
     """
 
+    # def __init__(self, buttons: list[list[MyButton]], number: MyButton.number):
+    #     self.buttons = buttons
+    #     self.number = number
     @staticmethod
-    def setting_mines(buttons):
+    def setting_mines(buttons: list[list[MyButton]], number: int):
         """
         This function is used to randomly place the mines on the minefield grid.
 
+        :param number:
         :param buttons: The List of lists represents a grid of tkinter buttons.
         :return: None
         """
-        btn_li = buttons
-        num_li = [num for num in range(1, (config.ROW * config.COLUMN))]
+        num_li = []
+        for num in range(1, (config.ROW * config.COLUMN)):
+            if num != number:
+                num_li.append(num)
+
+        # num_li = [num for num in range(1, (config.ROW * config.COLUMN))]
         shuffle(num_li)
         num_li = num_li[: config.MINES]
 
         for i in range(1, config.ROW + 2):
             for j in range(config.COLUMN + 2):
-                btn = btn_li[i][j]
+                btn = buttons[i][j]
                 if btn.number in num_li and btn.number != 0:
                     btn.is_mine = True

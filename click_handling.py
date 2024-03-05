@@ -7,6 +7,8 @@ from tkinter.messagebox import showinfo
 import config
 from gui import MineSweeperGui, MyButton
 from timer import Timer
+import utils
+from end_game_handler import AllCellShow
 
 
 class ClickHandling:
@@ -19,18 +21,82 @@ class ClickHandling:
         - get_click: Implement the click button commands
     """
 
-    GUI = MineSweeperGui()
+    # GUI = MineSweeperGui()
 
-    def __init__(self, gui: MineSweeperGui, timer: Timer):
+    def __init__(
+        self,
+        gui: MineSweeperGui,
+        mines_init: utils.MinesInstaller,
+        mines_calc: utils.MinesCalc,
+        prnt: utils.BtnConsoleRepr,
+        show_all_cell: AllCellShow,
+        timer: Timer,
+    ):
         self.gui = gui
+        self.mines_init = mines_init
+        self.mines_calc = mines_calc
+        self.prnt = prnt
+        self.show_all_cell = show_all_cell
         self.timer = timer
+        self.first_click_done = False
+
+    def minefield_init(self, click_btn: MyButton):
+        if not self.first_click_done:
+            click_btn_number = click_btn.number
+            self.mines_init.setting_mines(config.BUTTONS, click_btn_number)
+            self.mines_calc.mines_calc_init(config.BUTTONS)
+            self.prnt.print_btn(config.BUTTONS)
+            self.left_click_handling(click_btn)
+            self.first_click_done = True
+        else:
+            self.left_click_handling(click_btn)
 
     def btn_click_bind(self):
         for i in range(1, config.ROW + 1):
             for j in range(1, config.COLUMN + 1):
                 btn = config.BUTTONS[i][j]
-                btn.config(command=lambda click_btn=btn: self.get_click(click_btn))
+                btn.config(command=lambda click_btn=btn: self.minefield_init(click_btn))
                 btn.bind("<Button-3>", self.right_click_handling)
+
+    def left_click_handling(self, click_btn: MyButton):
+        """
+        Implement the clicked button commands.
+
+        :param click_btn: The bound method of MyButton.
+        :return: None
+        """
+        # Freeze the clicked button (only one click is possible).
+        click_btn.config(state="disabled")
+        # Make the clicked button is sunken.
+        if not click_btn.is_mine:
+            click_btn.config(relief=tk.SUNKEN)
+
+        if click_btn.is_mine:
+            # print(click_btn.__dict__)
+            # If the cell has a mine "*" is printed on the cell.
+            click_btn.is_open = True
+            self.timer.flag = True
+            click_btn.config(
+                text="*",
+                disabledforeground="black",
+                state="disabled",
+            )
+            self.show_all_cell.show_all_cell(config.BUTTONS)
+            showinfo("Game over!", "Game over!")
+
+        elif not click_btn.is_mine and click_btn.adjacent_mines_count != 0:
+            # print(click_btn.__dict__)
+            # Displaying the number of mines in the adjacent cells.
+            click_btn.config(
+                text=f"{click_btn.adjacent_mines_count}", disabledforeground="black"
+            )
+            click_btn.is_open = True
+            self.timer.timer_restart()
+
+        else:
+            # print(click_btn.__dict__)
+            self.breadth_first_search(click_btn)
+            self.timer.timer_restart()
 
     def right_click_handling(self, event):
         cur_btn: MyButton = event.widget
@@ -90,57 +156,3 @@ class ClickHandling:
                             and next_btn not in btn_queue
                         ):
                             btn_queue.append(next_btn)
-
-    def get_click(self, click_btn: MyButton):
-        """
-        Implement the clicked button commands.
-
-        :param click_btn: The bound method of MyButton.
-        :return: None
-        """
-        # Freeze the clicked button (only one click is possible).
-        click_btn.config(state="disabled")
-        # Make the clicked button is sunken.
-        if not click_btn.is_mine:
-            click_btn.config(relief=tk.SUNKEN)
-
-        if click_btn.is_mine:
-            # print(click_btn.__dict__)
-            # If the cell has a mine "*" is printed on the cell.
-            click_btn.is_open = True
-            click_btn.config(
-                text="*",
-                disabledforeground="black",
-                state="disabled",
-            )
-            self.timer.flag = True
-            for i in range(1, config.ROW + 1):
-                for j in range(1, config.COLUMN + 1):
-                    btn = config.BUTTONS[i][j]
-                    if btn.is_mine:
-                        btn.config(
-                            text="*",
-                            disabledforeground="black",
-                            state="disabled",
-                        )
-                    else:
-                        btn.config(
-                            text=f"{btn.adjacent_mines_count}",
-                            state="disabled",
-                            relief=tk.SUNKEN,
-                        )
-            showinfo("Game over!", "Game over!")
-
-        elif not click_btn.is_mine and click_btn.adjacent_mines_count != 0:
-            # print(click_btn.__dict__)
-            # Displaying the number of mines in the adjacent cells.
-            click_btn.config(
-                text=f"{click_btn.adjacent_mines_count}", disabledforeground="black"
-            )
-            click_btn.is_open = True
-            self.timer.timer_restart()
-
-        else:
-            # print(click_btn.__dict__)
-            self.breadth_first_search(click_btn)
-            self.timer.timer_restart()
