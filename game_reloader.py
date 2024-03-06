@@ -89,6 +89,8 @@ class GameReloader(IGameReloader):
         # self.menu.__init__()  # Initialise the class MenuBar again.
         # print("Initialise the class MenuBar again")
 
+        self.gui.create_list_of_buttons_list()
+
         self.gui.create_button_widgets()
         print("Creating the button widgets")
 

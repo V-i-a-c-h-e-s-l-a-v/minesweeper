@@ -102,8 +102,9 @@ class Game:
         a certain order to run the game functionality.
         :return: None
         """
-
+        self.gui.create_list_of_buttons_list()
         self.gui.create_button_widgets()
+
         self.menu.create_menu_bar(self.exit_handling)
         self.menu.set_reloader(self.game_reloader)
         self.click_handling.btn_click_bind()
