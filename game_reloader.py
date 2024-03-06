@@ -11,6 +11,7 @@ from i_game_reloader import IGameReloader
 from settings import MenuBar
 from timer import Timer
 import threading
+import tkinter as tk
 
 
 class GameReloader(IGameReloader):
@@ -40,9 +41,11 @@ class GameReloader(IGameReloader):
     def __init__(
         self,
         gui: MineSweeperGui,
-        menu: MenuBar,
-        click_handling: ClickHandling,
+        mines_init: MinesInstaller,
+        mines_calc: MinesCalc(),
         timer: Timer,
+        click_handling: ClickHandling,
+        prnt: BtnConsoleRepr(),
     ):
         """
         Construct class GameReloader.
@@ -55,10 +58,12 @@ class GameReloader(IGameReloader):
         :param prnt: The instance of the class BtnConsoleRepr.
         """
         self.gui = gui
-        self.menu = menu
-        self.click_handling = click_handling
+        self.mines_init = mines_init
+        self.mines_calc = mines_calc
+
         self.timer = timer
-        self.exit_handling = ExitHandling(self.timer)
+        self.click_handling = click_handling
+        self.prnt = prnt
 
     # def thread_control(self) -> bool:
     #     return self.thread_1.is_alive()
@@ -75,14 +80,14 @@ class GameReloader(IGameReloader):
         for child in config.WINDOW.winfo_children():
             # Iterating through the objects of the WINDOW to close them directly
             # using the destroy() method.
-
-            child.destroy()
+            if not isinstance(child, tk.Menu):
+                child.destroy()
 
         self.gui.__init__()  # Initialise the class MineSweeperGui again.
         print("Initialise the class MineSweeperGui again.")
 
-        self.menu.__init__()  # Initialise the class MenuBar again.
-        print("Initialise the class MenuBar again")
+        # self.menu.__init__()  # Initialise the class MenuBar again.
+        # print("Initialise the class MenuBar again")
 
         self.gui.create_button_widgets()
         print("Creating the button widgets")
@@ -90,9 +95,9 @@ class GameReloader(IGameReloader):
         self.gui.create_mines_left_bar(config.MINES)
         print("Creating the mines left bar widget")
 
-        self.menu.create_menu_bar(self.exit_handling)
-        print("Creating the menu bar widgets")
-
+        # self.menu.create_menu_bar(self.exit_handling)
+        # print("Creating the menu bar widgets")
+        self.click_handling.first_click_done = False
         self.click_handling.btn_click_bind()
         print("Click handling")
         self.gui.create_timer_bar()
