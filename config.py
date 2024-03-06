@@ -6,15 +6,16 @@ and contains the global variable values.
 import tkinter as tk
 from gui import MyButton
 
+# ---- The GUI main window ----
 
-WINDOW = tk.Tk()  # The GUI main window.
+WINDOW = tk.Tk()  #
 
 # ---- Main presets ------
 ROW: int = 10
 COLUMN: int = 10
 MINES: int = 15
 BUTTONS: list[list[MyButton]] = []
-TIME_PRESET: int = 15
+TIME_PRESET: int = 25
 MINES_LEFT: int = MINES
 
 # ----- Colors presets ----

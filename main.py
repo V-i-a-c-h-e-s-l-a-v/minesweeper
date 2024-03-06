@@ -52,10 +52,10 @@ class Game:
         base class to use widget Menu of Tkinter module;
         - mines_init: Provides the instance of the class MinesInstaller
         is used to randomly place mines on the minefield grid;
-        - click_handling: Provides the instance of the class Click is used for the
-        button click event handling;
         - mines_calc: Provides the instance of the class MinesCalc is used to
         calculate the number of mines on the adjacent cells;
+        - click_handling: Provides the instance of the class Click is used for the
+        button click event handling;
         - prnt: Provides the instance of the class BtnConsoleRepr is used to print
         the tkinter buttons representation into the console for debugging purposes;
         - show_all_cell: Provides the instance of the class AllCellShow is used to

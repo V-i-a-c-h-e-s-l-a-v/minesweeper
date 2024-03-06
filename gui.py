@@ -51,7 +51,7 @@ class MyButton(tk.Button):
         Construct subclass MyButton based on the superclass tk.Button.
         :param master: Tkinter base widget,
         :param x: Number of the minefield row,
-        :param y: umber of the minefield column,
+        :param y: Number of the minefield column,
         :param number: The position coordinate of the cell,
         :param adjacent_mines_count: The number of mines on the adjacent cells,
         :param args:   :param kwargs: other arguments of the Button widgets.
