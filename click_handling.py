@@ -1,27 +1,32 @@
 """
-The click_handling module is used to handle the button click event.
+The click_handling module is used for the button click event handling.
 """
 
 import tkinter as tk
-from tkinter.messagebox import showinfo
 import config
+import utils
+from tkinter.messagebox import showinfo
 from gui import MineSweeperGui, MyButton
 from timer import Timer
-import utils
 from end_game_handler import AllCellShow
 
 
 class ClickHandling:
     """
     The class ClickHandling is used for the button click event handling.
-    Methods:
-        - get_click: Implement the click button commands.
-        - breadth_first_search: This method is used for
-        algorithmically searching all non-mined adjacent cells.
-        - get_click: Implement the click button commands
-    """
 
-    # GUI = MineSweeperGui()
+    Methods:
+        - __init__: Constructing class ClickHandling;
+        - minefield_init: Initializing the minefield by placing the mines and
+        calculating the number of mines on the adjacent cells;
+        - btn_click_bind: The method is used to bind an event handler to both
+        right-click and left-click events;
+        - left_click_handling: Implementing the left-click event;
+        - right_click_handling: Implementing the right-click event;
+        - breadth_first_search: This method is used for algorithmically searching
+        all non-mined adjacent cells.
+
+    """
 
     def __init__(
         self,
@@ -32,6 +37,26 @@ class ClickHandling:
         show_all_cell: AllCellShow,
         timer: Timer,
     ):
+        """
+        Constructing class ClickHandling.
+
+        Parameters:
+        :param gui: The instance of the class MineSweeperGui which is a
+        base class to use Tkinter widgets of the GUI;
+        :param mines_init: The instance of the class MinesInstaller is used to randomly
+        place mines on the minefield grid;
+        :param mines_calc: The instance of the class MinesCalc is used to
+        calculate the number of mines on the adjacent cells;
+        :param prnt: The instance of the class BtnConsoleRepr is used to print
+        the tkinter buttons representation into the console for debugging purposes;
+        :param show_all_cell: The instance of the class AllCellShow is used to
+        open the closed minefield cells when the end game event has occurred;
+        :param timer: The instance of the class Timer is used to provide the time countdown.
+        Attribute:
+        first_click_done: Indicating if the first left-click event of the current game session
+        has occurred.
+
+        """
         self.gui = gui
         self.mines_init = mines_init
         self.mines_calc = mines_calc
@@ -40,7 +65,14 @@ class ClickHandling:
         self.timer = timer
         self.first_click_done = False
 
-    def minefield_init(self, click_btn: MyButton):
+    def minefield_init(self, click_btn: MyButton) -> None:
+        """
+        Initializing the minefield by placing the mines and calculating the number
+        of mines on the adjacent cells.
+
+        :param click_btn: The Button widget of the package Tkinter.
+        :return: None.
+        """
         if not self.first_click_done:
             click_btn_number = click_btn.number
             self.mines_init.setting_mines(config.BUTTONS, click_btn_number)
@@ -51,29 +83,34 @@ class ClickHandling:
         else:
             self.left_click_handling(click_btn)
 
-    def btn_click_bind(self):
+    def btn_click_bind(self) -> None:
+        """
+        The method is used to bind an event handler to both right-click and left-click
+        events.
+
+        :return: None.
+        """
         for i in range(1, config.ROW + 1):
             for j in range(1, config.COLUMN + 1):
                 btn = config.BUTTONS[i][j]
                 btn.config(command=lambda click_btn=btn: self.minefield_init(click_btn))
                 btn.bind("<Button-3>", self.right_click_handling)
 
-    def left_click_handling(self, click_btn: MyButton):
+    def left_click_handling(self, click_btn: MyButton) -> None:
         """
         Implement the clicked button commands.
 
-        :param click_btn: The bound method of MyButton.
-        :return: None
+        :param click_btn: The Button widget of the package Tkinter.
+        :return: None.
         """
         # Freeze the clicked button (only one click is possible).
         click_btn.config(state="disabled")
-        # Make the clicked button is sunken.
+        # Make the non-mined clicked button is sunken.
         if not click_btn.is_mine:
             click_btn.config(relief=tk.SUNKEN)
 
         if click_btn.is_mine:
-            # print(click_btn.__dict__)
-            # If the cell has a mine "*" is printed on the cell.
+            # If the cell has a mine "*" the game is over.
             click_btn.is_open = True
             self.timer.flag = True
             click_btn.config(
@@ -85,21 +122,26 @@ class ClickHandling:
             showinfo("Game over!", "Game over!")
 
         elif not click_btn.is_mine and click_btn.adjacent_mines_count != 0:
-            # print(click_btn.__dict__)
             # Displaying the number of mines in the adjacent cells.
             click_btn.config(
                 text=f"{click_btn.adjacent_mines_count}",
                 disabledforeground=f"{config.COLORS_PRESET[click_btn.adjacent_mines_count]}",
             )
             click_btn.is_open = True
-            self.timer.timer_restart()
+
+            self.timer.timer_restart()  # Restarting the time countdown.
 
         else:
-            # print(click_btn.__dict__)
             self.breadth_first_search(click_btn)
             self.timer.timer_restart()
 
-    def right_click_handling(self, event):
+    def right_click_handling(self, event) -> None:
+        """
+        Implementing the right-click event.
+
+        :param event: The right-click event.
+        :return: None.
+        """
         cur_btn: MyButton = event.widget
 
         if cur_btn["state"] == "normal" and config.MINES_LEFT > 0:
@@ -117,7 +159,13 @@ class ClickHandling:
             self.gui.create_mines_left_bar(config.MINES_LEFT)
 
     @staticmethod
-    def breadth_first_search(click_btn: MyButton):
+    def breadth_first_search(click_btn: MyButton) -> None:
+        """
+        This method is used for algorithmically searching all non-mined adjacent cells.
+
+        :param click_btn: The Button widget of the package Tkinter.
+        :return: None.
+        """
         btn_queue = [click_btn]
 
         while btn_queue:
