@@ -8,9 +8,7 @@ from gui import MineSweeperGui
 from utils import MinesInstaller, MinesCalc, BtnConsoleRepr, ExitHandling
 from click_handling import ClickHandling
 from i_game_reloader import IGameReloader
-from settings import MenuBar
 from timer import Timer
-import threading
 import tkinter as tk
 
 
@@ -27,8 +25,10 @@ class GameReloader(IGameReloader):
          randomly place mines on the minefield grid;
         - mines_calc: Provides the instance of the class MinesCalc  is used for
          calculation the number of mines on the adjacent cells;
-        - click_handling: Provides the instance of the class ClickHandling is used
-         for the button click event handling;
+        - timer: Provides the instance of the class Timer is used to provide the
+        time countdown;
+        - click_handling: Provides the instance of the class ClickHandling is used to
+        handle mouse click button events;
         - prnt: Provides the instance of the class BtnConsoleRepr is used to print
          the tkinter buttons representation into the console for debugging purposes.
 
@@ -51,9 +51,9 @@ class GameReloader(IGameReloader):
         Construct class GameReloader.
 
         :param gui: The instance of the class MineSweeperGui;
-        :param menu: The instance of the class MineSweeperGui;
         :param mines_init: The instance of the class MinesInstaller;
         :param mines_calc: The instance of the class MinesCalc;
+        :param timer: The Timer class instance provides the countdown time function;
         :param click_handling: The instance of the class ClickHandling;
         :param prnt: The instance of the class BtnConsoleRepr.
         """
@@ -71,36 +71,31 @@ class GameReloader(IGameReloader):
     def reload(self) -> None:
         """
         Running the new session of the game.
-        :return: None
+
+        :return: None.
         """
 
-        config.BUTTONS = []
+        config.BUTTONS = []  # Sets up the empty list instead of the list of
+        # button lists.
 
-        print("Reloaded")
+        print()
+        print("______ New Game _______")
+        print()
+
         for child in config.WINDOW.winfo_children():
-            # Iterating through the objects of the WINDOW to close them directly
-            # using the destroy() method.
+            # Iterating through the objects of the Tkinter package base widget except the
+            # Menu widget to close them directly by using the 'destroy' method.
+
             if not isinstance(child, tk.Menu):
                 child.destroy()
 
-        self.gui.__init__()  # Initialise the class MineSweeperGui again.
-        print("Initialise the class MineSweeperGui again.")
-
-        # self.menu.__init__()  # Initialise the class MenuBar again.
-        # print("Initialise the class MenuBar again")
-
+        self.gui.__init__()  # Reinitializing the MineSweeperGui class by its constructor
+        # method.
         self.gui.create_list_of_buttons_list()
-
         self.gui.create_button_widgets()
-        print("Creating the button widgets")
-
         self.gui.create_mines_left_bar(config.MINES)
-        print("Creating the mines left bar widget")
-
-        # self.menu.create_menu_bar(self.exit_handling)
-        # print("Creating the menu bar widgets")
-        self.click_handling.first_click_done = False
+        self.click_handling.first_click_done = False  # Reset the left-click first event
+        # indicator to the default value.
         self.click_handling.btn_click_bind()
-        print("Click handling")
         self.gui.create_timer_bar()
         self.timer.timer_restart()

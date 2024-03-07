@@ -38,8 +38,9 @@ class MenuBar:
     def set_reloader(self, reloader: IGameReloader) -> None:
         """
             Provide the instance of the IGameReloader class.
+
         :param reloader: The instance of the IGameReloader class.
-        :return: None
+        :return: None.
         """
         self.reloader = reloader
 
@@ -53,11 +54,12 @@ class MenuBar:
         """
             Implements the functionality of the 'Apply' button, which is used
         to apply a new game settings.
+
         :param time_preset_entry:
         :param row: The number of minefield grid rows;
         :param column: The number of minefield grid columns;
         :param mines: The number of mines on the minefield grid.
-        :return: None
+        :return: None.
         """
         try:
             config.ROW = int(row.get())
@@ -76,7 +78,8 @@ class MenuBar:
         - Mines number;
         - Cancel;
         - Apply.
-        :return: None
+
+        :return: None.
         """
         win_settings = tk.Toplevel(config.WINDOW)
         win_settings.title("Settings")
@@ -120,7 +123,8 @@ class MenuBar:
         - New Game;
         - Settings;
         - Exit.
-        :return: None
+        
+        :return: None.
         """
         menu_bar = tk.Menu(config.WINDOW)
         config.WINDOW.config(
@@ -135,7 +139,8 @@ class MenuBar:
     def reload_game(self):
         """
         Running the new session of the game.
-        :return: None
+
+        :return: None.
 
         """
         self.reloader.reload()

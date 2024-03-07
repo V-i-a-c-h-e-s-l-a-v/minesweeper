@@ -27,6 +27,7 @@ class ExitHandling:
     def __init__(self, timer: Timer):
         """
         Construct class ExitHandling.
+
         :param timer: The instance of the class Timer.
         """
         self.timer = timer
@@ -35,6 +36,7 @@ class ExitHandling:
     def exit(self) -> None:
         """
         Implementing the game exit procedure.
+
         :return: None.
         """
         self.timer.flag = True
@@ -84,6 +86,7 @@ class PrintAllButtons:
         """
         Method is used to display the content all Tkinter buttons (cells)
         of the game GUI for debugging purposes.
+
         :param buttons: The list of lists represents a grid of tkinter buttons.
         :return: None.
         """
@@ -104,6 +107,7 @@ class MinesCalc:
     """
     The MinesCalc class is used to calculate the number of mines
     on the adjacent cells.
+
     Methods:
         - nearest_cells_check: The method is used to count how many mines are
         on the adjacent cells.
@@ -113,10 +117,11 @@ class MinesCalc:
     """
 
     @staticmethod
-    def nearest_cells_check(buttons, i: int, j: int):
+    def nearest_cells_check(buttons, i: int, j: int) -> int:
         """
         The method is used to count how many mines are
         on the adjacent cells.
+
         :param buttons: The list of lists representing a grid of tkinter buttons,
         :param i: The row number of the minefield grid,
         :param j: The column number of the minefield grid.
@@ -139,7 +144,8 @@ class MinesCalc:
         obtain their coordinates on the minefield grid, which are then sent
         to the 'nearest_cells_check' method.
         :param buttons: The list of lists represents a grid of tkinter buttons.
-        :return: None
+
+        :return: None.
         """
         for x in range(1, config.ROW + 1):
             for y in range(config.COLUMN + 1):
@@ -163,9 +169,10 @@ class MinesInstaller:
     def setting_mines(buttons: list[list[MyButton]], number: int) -> None:
         """
         This function is used to randomly place the mines on the minefield grid.
-        :param number: The position coordinate of the cell;
+
+        :param number: The position coordinate of the cell.z
         :param buttons: The List of lists represents a grid of tkinter buttons.
-        :return: None
+        :return: None.
         """
         num_li = []
         for num in range(1, (config.ROW * config.COLUMN)):

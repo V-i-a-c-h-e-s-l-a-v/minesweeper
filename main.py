@@ -9,7 +9,7 @@ clues about the number of neighboring mines in each field.
 
 
 Main module uses the following modules:
-- config: Provides the main the Tkinter base widget of the application
+- config: Provides the Tkinter base widget of the application
 and contains the global variable values;
 - gui: This module is used to create the game GUI;
 - settings: This module is used to change the game presets;

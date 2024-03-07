@@ -16,8 +16,6 @@ class MyButton(tk.Button):
     from the Python builtin package Tkinter and extends its functionality by adding a dunder
     method and some additional attributes.
 
-
-
     Attributes:
         - master: Tkinter base widget,
         - x: Number of the minefield row,
@@ -49,6 +47,7 @@ class MyButton(tk.Button):
     ):
         """
         Construct subclass MyButton based on the superclass tk.Button.
+
         :param master: Tkinter base widget,
         :param x: Number of the minefield row,
         :param y: Number of the minefield column,
@@ -68,6 +67,7 @@ class MyButton(tk.Button):
     def __repr__(self):
         """
         Magic method.
+
         :return: Returning a new description of the class instance for debugging purposes.
         """
         return f"Button_{self.number} {self.x} {self.y} {self.is_mine} {self.adjacent_mines_count} {self.is_mine}"
@@ -107,7 +107,8 @@ class MineSweeperGui:
         """
         Creating the 2D list of button widgets, setting the values to the extra button
         attributes and saving this list as a value of config.BUTTONS variable.
-        :return: None
+
+        :return: None.
         """
         for i in range(config.ROW + 2):
             temp = []  # List representing the grid row of tkinter buttons.
@@ -141,7 +142,7 @@ class MineSweeperGui:
     def create_button_widgets() -> None:
         """
         Creating Tkinter button widgets.
-        :return: None
+        :return: None.
         """
         # menubar = tk.Menu(config.WINDOW)
         # config.WINDOW.config(menu=menubar)
@@ -162,7 +163,8 @@ class MineSweeperGui:
     def create_timer_bar(self) -> None:
         """
          Creating Tkinter button widgets.
-        :return: None
+
+        :return: None.
         """
         self.timer_label = tk.Label(config.WINDOW, text="", font="Arial 10")
         self.timer_label.grid(row=config.ROW + 1, column=0, columnspan=3)
@@ -171,7 +173,8 @@ class MineSweeperGui:
         """
         Creating the mines left bur.
         :param mines_left: The number of mines left.
-        :return: None
+
+        :return: None.
         """
         self.mines_left_label = tk.Label(
             config.WINDOW, text=f"Mines: {mines_left}", font="Arial 10"

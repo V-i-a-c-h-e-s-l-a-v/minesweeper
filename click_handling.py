@@ -53,7 +53,7 @@ class ClickHandling:
         open the closed minefield cells when the end game event has occurred;
         :param timer: The instance of the class Timer is used to provide the time countdown.
         Attribute:
-        first_click_done: Indicating if the first left-click event of the current game session
+        first_click_done: Indicating if the left-click first event of the current game session
         has occurred.
 
         """
