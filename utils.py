@@ -58,7 +58,7 @@ class BtnConsoleRepr:
         """
         This function is used to print the tkinter buttons representation
         into the console for the debugging purposes.
-        :param buttons: The List of lists represents a grid of tkinter buttons.
+        :param buttons: The List of lists represents a grid of Tkinter buttons.
         :return: None
         """
         for i in range(1, config.ROW + 1):

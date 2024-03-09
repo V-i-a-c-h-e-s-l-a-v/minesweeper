@@ -8,7 +8,7 @@ import utils
 from tkinter.messagebox import showinfo
 from gui import MineSweeperGui, MyButton
 from timer import Timer
-from end_game_handler import AllCellShow
+from end_game_handler import AllCellShow, WinEventHandling
 
 
 class ClickHandling:
@@ -35,6 +35,7 @@ class ClickHandling:
         mines_calc: utils.MinesCalc,
         prnt: utils.BtnConsoleRepr,
         show_all_cell: AllCellShow,
+        win_event_handling: WinEventHandling,
         timer: Timer,
     ):
         """
@@ -51,6 +52,8 @@ class ClickHandling:
         the tkinter buttons representation into the console for debugging purposes;
         :param show_all_cell: The instance of the class AllCellShow is used to
         open the closed minefield cells when the end game event has occurred;
+        :param win_event_handling: The instance of the class WinEventHandling
+        is used to handle the event when the player wins the game;
         :param timer: The instance of the class Timer is used to provide the time countdown.
         Attribute:
         first_click_done: Indicating if the left-click first event of the current game session
@@ -62,6 +65,7 @@ class ClickHandling:
         self.mines_calc = mines_calc
         self.prnt = prnt
         self.show_all_cell = show_all_cell
+        self.win_event_handling = win_event_handling
         self.timer = timer
         self.first_click_done = False
 
@@ -103,6 +107,12 @@ class ClickHandling:
         :param click_btn: The Button widget of the package Tkinter.
         :return: None.
         """
+
+        if self.win_event_handling.win_even_handling(config.BUTTONS):
+            self.timer.stop = True
+            showinfo("Game over!", "All mines found!")
+            self.show_all_cell.show_all_cell(config.BUTTONS)
+
         # Freeze the clicked button (only one click is possible).
         click_btn.config(state="disabled")
         # Make the non-mined clicked button is sunken.
@@ -142,11 +152,18 @@ class ClickHandling:
         :param event: The right-click event.
         :return: None.
         """
+
+        if self.win_event_handling.win_even_handling(config.BUTTONS):
+            self.timer.stop = True
+            showinfo("Game over!", "All mines found!")
+            self.show_all_cell.show_all_cell(config.BUTTONS)
+
         cur_btn: MyButton = event.widget
 
         if cur_btn["state"] == "normal" and config.MINES_LEFT > 0:
             cur_btn["state"] = "disabled"
             cur_btn["text"] = "🚩"
+            cur_btn.is_open = True
             config.MINES_LEFT -= 1
             self.gui.mines_left_label.destroy()
             self.gui.create_mines_left_bar(config.MINES_LEFT)
@@ -154,21 +171,32 @@ class ClickHandling:
         elif cur_btn["text"] == "🚩":
             cur_btn["text"] = ""
             cur_btn["state"] = "normal"
+            cur_btn.is_open = False
             config.MINES_LEFT += 1
             self.gui.mines_left_label.destroy()
             self.gui.create_mines_left_bar(config.MINES_LEFT)
 
-    @staticmethod
-    def breadth_first_search(click_btn: MyButton) -> None:
+    def breadth_first_search(self, click_btn: MyButton) -> None:
         """
         This method is used for algorithmically searching all non-mined adjacent cells.
 
         :param click_btn: The Button widget of the package Tkinter.
         :return: None.
         """
+
+        if self.win_event_handling.win_even_handling(config.BUTTONS):
+            self.timer.stop = True
+            showinfo("Game over!", "All mines found!")
+            self.show_all_cell.show_all_cell(config.BUTTONS)
+
         btn_queue = [click_btn]
 
         while btn_queue:
+            if self.win_event_handling.win_even_handling(config.BUTTONS):
+                self.timer.stop = True
+                showinfo("Game over!", "All mines found!")
+                self.show_all_cell.show_all_cell(config.BUTTONS)
+
             current_btn = btn_queue.pop()
 
             if current_btn.adjacent_mines_count != 0:

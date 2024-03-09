@@ -16,8 +16,8 @@ and contains the global variable values;
 - click_handling: This module is used to handle mouse click button events;
 - utils: This module is used to implement the game base functionality;
 - game_reloader: This module is used to provide the game reloading;
-- end_game_handler: This module is used to open the closed minefield cells when
-the end game event has occurred;
+- end_game_handler: This module has the tools for handling game win event and opens
+ all non-opened cells of the minefield grid after any stop-game events;
 - timer: This module is used to provide the time countdown.
 """
 
@@ -27,7 +27,7 @@ from settings import MenuBar
 from click_handling import ClickHandling
 from utils import MinesInstaller, MinesCalc, BtnConsoleRepr, ExitHandling
 from game_reloader import GameReloader
-from end_game_handler import AllCellShow
+from end_game_handler import AllCellShow, WinEventHandling
 from timer import Timer
 
 
@@ -60,6 +60,8 @@ class Game:
         the tkinter buttons representation into the console for debugging purposes;
         - show_all_cell: Provides the instance of the class AllCellShow is used to
         open the closed minefield cells when the end game event has occurred;
+        - win_event_handling: The instance of the class WinEventHandling is used to
+        handle the event when the player wins the game;
         - timer: Provides the instance of the class Timer is used to provide the time countdown;
         - click_handling: Provides the instance of the class ClickHandling is used to
         handle mouse click button events;
@@ -74,6 +76,7 @@ class Game:
         self.mines_calc = MinesCalc()
         self.prnt = BtnConsoleRepr()
         self.show_all_cell = AllCellShow()
+        self.win_event_handling = WinEventHandling()
         self.timer = Timer(self.gui, self.show_all_cell)
 
         self.click_handling = ClickHandling(
@@ -82,6 +85,7 @@ class Game:
             self.mines_calc,
             self.prnt,
             self.show_all_cell,
+            self.win_event_handling,
             self.timer,
         )
 

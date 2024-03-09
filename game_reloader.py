@@ -5,7 +5,7 @@
 
 import config
 from gui import MineSweeperGui
-from utils import MinesInstaller, MinesCalc, BtnConsoleRepr, ExitHandling
+from utils import MinesInstaller, MinesCalc, BtnConsoleRepr
 from click_handling import ClickHandling
 from i_game_reloader import IGameReloader
 from timer import Timer
@@ -60,13 +60,9 @@ class GameReloader(IGameReloader):
         self.gui = gui
         self.mines_init = mines_init
         self.mines_calc = mines_calc
-
         self.timer = timer
         self.click_handling = click_handling
         self.prnt = prnt
-
-    # def thread_control(self) -> bool:
-    #     return self.thread_1.is_alive()
 
     def reload(self) -> None:
         """
@@ -77,6 +73,7 @@ class GameReloader(IGameReloader):
 
         config.BUTTONS = []  # Sets up the empty list instead of the list of
         # button lists.
+        config.MINES_LEFT = config.MINES
 
         print()
         print("______ New Game _______")
@@ -93,7 +90,7 @@ class GameReloader(IGameReloader):
         # method.
         self.gui.create_list_of_buttons_list()
         self.gui.create_button_widgets()
-        self.gui.create_mines_left_bar(config.MINES)
+        self.gui.create_mines_left_bar(config.MINES_LEFT)
         self.click_handling.first_click_done = False  # Reset the left-click first event
         # indicator to the default value.
         self.click_handling.btn_click_bind()

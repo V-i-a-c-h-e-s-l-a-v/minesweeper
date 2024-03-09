@@ -11,9 +11,9 @@ from gui import MyButton
 WINDOW = tk.Tk()  #
 
 # ---- Main presets ------
-ROW: int = 10
-COLUMN: int = 10
-MINES: int = 15
+ROW: int = 5
+COLUMN: int = 5
+MINES: int = 3
 BUTTONS: list[list[MyButton]] = []
 TIME_PRESET: int = 25
 MINES_LEFT: int = MINES
