@@ -62,10 +62,12 @@ class Game:
         open the closed minefield cells when the end game event has occurred;
         - win_event_handling: The instance of the class WinEventHandling is used to
         handle the event when the player wins the game;
-        - timer: Provides the instance of the class Timer is used to provide the time countdown;
+        - timer: Provides the instance of the class Timer is used to provide the time
+        countdown;
         - click_handling: Provides the instance of the class ClickHandling is used to
         handle mouse click button events;
-        - game_reloader: Provides the instance of the class GameReloader is used to run the game again;
+        - game_reloader: Provides the instance of the class GameReloader is used to
+        run the game again;
         - exit_handling: Provides the instance of the class ExitHandling is used to
         properly implement the game exit procedure.
         """
