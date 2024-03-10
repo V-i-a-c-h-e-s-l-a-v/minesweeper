@@ -37,8 +37,7 @@ class AllCellShow:
                 btn = buttons[i][j]
                 if btn.is_mine and not btn.is_open:
                     btn.config(
-                        text="*",
-                        disabledforeground="black",
+                        text="🚩",
                         state="disabled",
                     )
                 elif not btn.is_mine and not btn.is_open:

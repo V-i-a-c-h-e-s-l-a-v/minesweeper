@@ -124,8 +124,8 @@ class ClickHandling:
             click_btn.is_open = True
             self.timer.flag = True
             click_btn.config(
-                text="*",
-                disabledforeground="black",
+                text="🚩",
+                disabledforeground="red",
                 state="disabled",
             )
             self.show_all_cell.show_all_cell(config.BUTTONS)
@@ -163,6 +163,7 @@ class ClickHandling:
         if cur_btn["state"] == "normal" and config.MINES_LEFT > 0:
             cur_btn["state"] = "disabled"
             cur_btn["text"] = "🚩"
+            cur_btn["disabledforeground"] = "red"
             cur_btn.is_open = True
             config.MINES_LEFT -= 1
             self.gui.mines_left_label.destroy()
