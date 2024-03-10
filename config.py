@@ -15,7 +15,7 @@ ROW: int = 5
 COLUMN: int = 5
 MINES: int = 3
 BUTTONS: list[list[MyButton]] = []
-TIME_PRESET: int = 25
+TIME_PRESET: int = 10
 MINES_LEFT: int = MINES
 
 # ----- Colors presets ----

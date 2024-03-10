@@ -43,6 +43,7 @@ class Timer:
         self.show_all_cell = show_all_cell
         self.flag = False
         self.stop = False
+        self.minefield_init = False
 
     def timer_restart(self) -> None:
         """
@@ -61,13 +62,27 @@ class Timer:
         :param duration: The starting value of the time countdown.
         :return: None.
         """
-        if duration > 0 and not self.flag and not self.stop:
+        if duration > 6 and not self.flag and not self.stop:
             self.gui.timer_label.after(
                 0, self.timer_label_config, Timer.time_format(duration)
             )
             self.gui.timer_label.after(1000, self.timer_countdown, duration - 1)
-        elif duration == 0:
+        elif 1 <= duration <= 6 and not self.flag and not self.stop:
+            if duration % 2 == 0:
+                self.gui.timer_label.after(
+                    0, self.timer_label_config, Timer.time_format(duration)
+                )
+                self.gui.timer_label.after(1000, self.timer_countdown, duration - 1)
+            else:
+                self.gui.timer_label.after(
+                    0, self.timer_label_config_1, Timer.time_format(duration)
+                )
+                self.gui.timer_label.after(1000, self.timer_countdown, duration - 1)
+
+        elif duration == 0 and self.minefield_init:
             self.show_all_cell.show_all_cell(config.BUTTONS)
+            showinfo("Game over!", "Time is over!")
+        elif duration == 0 and not self.minefield_init:
             showinfo("Game over!", "Time is over!")
         elif self.stop:
             self.gui.timer_label.config(text=f"{self.time_format(duration)}")
@@ -86,7 +101,15 @@ class Timer:
         :param time_value: The current value of the timer.
         :return: None.
         """
-        self.gui.timer_label.config(text=time_value)
+        self.gui.timer_label.config(text=time_value, fg="black")
+
+    def timer_label_config_1(self, time_value: str) -> None:
+        """
+        Representing the current value of the timer.
+        :param time_value: The current value of the timer.
+        :return: None.
+        """
+        self.gui.timer_label.config(text=time_value, fg="red")
 
     @staticmethod
     def time_format(seconds) -> str:

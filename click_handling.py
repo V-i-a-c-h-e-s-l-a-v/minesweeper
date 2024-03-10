@@ -80,6 +80,7 @@ class ClickHandling:
         if not self.first_click_done:
             click_btn_number = click_btn.number
             self.mines_init.setting_mines(config.BUTTONS, click_btn_number)
+            self.timer.minefield_init = True
             self.mines_calc.mines_calc_init(config.BUTTONS)
             self.prnt.print_btn(config.BUTTONS)
             self.left_click_handling(click_btn)
