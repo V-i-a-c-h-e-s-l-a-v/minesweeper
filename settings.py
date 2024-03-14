@@ -111,7 +111,7 @@ class MenuBar:
         tk.Label(win_settings, text="Timer preset:").grid(row=3, column=0)
         time_preset_entry = tk.Entry(win_settings)
         time_preset_entry.grid(row=3, column=1, padx=3, pady=3)
-        time_preset_entry.insert(0, str(config.TIME_PRESET))
+        time_preset_entry.insert(0, str(config.TIME_PRESET_TEMP))
 
         tk.Button(
             win_settings,

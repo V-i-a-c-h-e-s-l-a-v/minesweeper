@@ -122,7 +122,6 @@ class ClickHandling:
             # If the cell has a mine "*" the game is over.
             click_btn.is_open = True
             self.timer.countdown_stop = True
-            self.timer.timer_launcher()
             click_btn.config(
                 text="🚩",
                 disabledforeground="red",
@@ -130,6 +129,7 @@ class ClickHandling:
             )
             self.show_all_cell.show_all_cell(config.BUTTONS)
             showinfo("Game over!", "Game over!")
+            config.GAME_OVER = True
 
         elif not click_btn.is_mine and click_btn.adjacent_mines_count != 0:
             # Displaying the number of mines in the adjacent cells.
