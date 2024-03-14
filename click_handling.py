@@ -8,7 +8,8 @@ import utils
 from tkinter.messagebox import showinfo
 from gui import MineSweeperGui, MyButton
 from timer import Timer
-from end_game_handler import AllCellShow, WinEventHandling
+from end_game_handler import WinEventHandling
+from show_all_cell import AllCellShow
 
 
 class ClickHandling:
@@ -109,11 +110,7 @@ class ClickHandling:
         :return: None.
         """
 
-        if self.win_event_handling.win_even_handling(config.BUTTONS):
-            print(self.win_event_handling.win_even_handling(config.BUTTONS))
-            self.timer.countdown_stop = True
-            showinfo("Game over!", "All mines found!")
-            self.show_all_cell.show_all_cell(config.BUTTONS)
+        self.win_event_handling.win_even_handling(config.BUTTONS)
 
         # Freeze the clicked button (only one click is possible).
         click_btn.config(state="disabled")
@@ -157,10 +154,7 @@ class ClickHandling:
         :return: None.
         """
 
-        if self.win_event_handling.win_even_handling(config.BUTTONS):
-            self.timer.countdown_restart = True
-            showinfo("Game over!", "All mines found!")
-            self.show_all_cell.show_all_cell(config.BUTTONS)
+        self.win_event_handling.win_even_handling(config.BUTTONS)
 
         cur_btn: MyButton = event.widget
 

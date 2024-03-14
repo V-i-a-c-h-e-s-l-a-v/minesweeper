@@ -9,43 +9,9 @@ all non-opened cells of the minefield grid after any stop-game events.
 
 
 from gui import MyButton
-import tkinter as tk
 import config
-
-
-class AllCellShow:
-    """
-    Opening the closed minefield cells when the end game event has occurred.
-        Methods:
-            - show_all_cell: Opening the closed minefield cells when the end
-            game event has occurred.
-
-
-    """
-
-    @staticmethod
-    def show_all_cell(buttons: list[list[MyButton]]) -> None:
-        """
-        Opening the closed minefield cells when the end game event
-        has occurred.
-        :param buttons: The List of lists represents a grid of Tkinter
-        buttons.
-        :return: None.
-        """
-        for i in range(1, config.ROW + 1):
-            for j in range(1, config.COLUMN + 1):
-                btn = buttons[i][j]
-                if btn.is_mine and not btn.is_open:
-                    btn.config(
-                        text="🚩",
-                        state="disabled",
-                    )
-                elif not btn.is_mine and not btn.is_open:
-                    btn.config(
-                        text=f"{btn.adjacent_mines_count}",
-                        state="disabled",
-                        relief=tk.SUNKEN,
-                    )
+from timer import Timer
+from tkinter.messagebox import showinfo
 
 
 class WinEventHandling:
@@ -57,8 +23,10 @@ class WinEventHandling:
 
     """
 
-    @staticmethod
-    def win_even_handling(buttons: list[list[MyButton]]) -> bool:
+    def __init__(self, timer: Timer):
+        self.timer = timer
+
+    def win_even_handling(self, buttons: list[list[MyButton]]) -> None:
         """
         Handling the event when the player wins the game.
         :param buttons: The List of lists represents a grid of Tkinter
@@ -78,6 +46,10 @@ class WinEventHandling:
                     all_btn_li.append(btn)
 
         if len(all_btn_li) - len(btn_li_is_open) == 1:
-            return True
-        else:
-            return False
+            self.timer.countdown_stop = True
+            showinfo("Game over!", "All mines found!")
+            config.GAME_OVER = True
+        elif len(all_btn_li) - len(btn_li_is_open) == 0:
+            self.timer.countdown_stop = True
+            showinfo("Game over!", "All mines found!")
+            config.GAME_OVER = True

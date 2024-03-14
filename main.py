@@ -26,8 +26,9 @@ from gui import MineSweeperGui
 from settings import MenuBar
 from click_handling import ClickHandling
 from utils import MinesInstaller, MinesCalc, BtnConsoleRepr, ExitHandling
+from show_all_cell import AllCellShow
 from game_reloader import GameReloader
-from end_game_handler import AllCellShow, WinEventHandling
+from end_game_handler import WinEventHandling
 from timer import Timer
 
 
@@ -78,9 +79,9 @@ class Game:
         self.mines_calc = MinesCalc()
         self.prnt = BtnConsoleRepr()
         self.show_all_cell = AllCellShow()
-        self.win_event_handling = WinEventHandling()
-        self.timer = Timer(self.gui, self.show_all_cell)
 
+        self.timer = Timer(self.gui, self.show_all_cell)
+        self.win_event_handling = WinEventHandling(self.timer)
         self.click_handling = ClickHandling(
             self.gui,
             self.mines_init,

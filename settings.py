@@ -82,6 +82,7 @@ class MenuBar:
 
         :return: None.
         """
+
         win_settings = tk.Toplevel(config.WINDOW)
         win_settings.title("Settings")
 

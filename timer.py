@@ -5,8 +5,10 @@ The Current module includes the Timer class.
 
 import config
 from gui import MineSweeperGui
+from show_all_cell import AllCellShow
 from tkinter.messagebox import showinfo
-from end_game_handler import AllCellShow
+
+# from end_game_handler import AllCellShow
 
 
 class Timer:
@@ -50,17 +52,9 @@ class Timer:
             self.timer_restart()
         elif not self.countdown_stop:
             self.timer_start()
-        # elif self.countdown_stop:
-        #     self.timer_stop()
 
     def timer_start(self):
         self.timer_countdown(config.TIME_PRESET)
-
-    # def timer_stop(self):
-    #     print("STOP")
-    #     self.gui.timer_label.destroy()
-    #     self.gui.create_timer_bar()
-    #     self.gui.timer_label.config(self.time_format(config.TIME_PRESET))
 
     def timer_restart(self):
         self.countdown_stop = True
@@ -72,70 +66,43 @@ class Timer:
 
     def timer_countdown(self, duration: int):
         config.TIME_PRESET = duration
-        if self.countdown_stop:
-            print("STOP")
-            self.timer_label_config(self.time_format(config.TIME_PRESET))
-            return
-        elif config.TIME_PRESET and not self.countdown_stop:
-            self.gui.timer_label.after(
-                0, self.timer_label_config, self.time_format(config.TIME_PRESET)
-            )
-            self.gui.timer_label.after(
-                1000, self.timer_countdown, config.TIME_PRESET - 1
-            )
-        elif not config.TIME_PRESET and not self.countdown_stop:
-            self.show_all_cell.show_all_cell(config.BUTTONS)
-            showinfo("Game over!", "Time is over!")
+        if not config.GAME_OVER:
+            if self.countdown_stop:
+                self.timer_label_config(self.time_format(config.TIME_PRESET))
+                return
+            elif 1 < config.TIME_PRESET <= 6 and not self.countdown_stop:
+                if config.TIME_PRESET % 2 == 0:
+                    self.gui.timer_label.after(
+                        0,
+                        self.timer_label_config_1,
+                        self.time_format(config.TIME_PRESET),
+                    )
+                    self.gui.timer_label.after(
+                        1000, self.timer_countdown, config.TIME_PRESET - 1
+                    )
+                else:
+                    self.gui.timer_label.after(
+                        0,
+                        self.timer_label_config,
+                        self.time_format(config.TIME_PRESET),
+                    )
+                    self.gui.timer_label.after(
+                        1000, self.timer_countdown, config.TIME_PRESET - 1
+                    )
+            elif config.TIME_PRESET and not self.countdown_stop:
+                self.gui.timer_label.after(
+                    0, self.timer_label_config, self.time_format(config.TIME_PRESET)
+                )
+                self.gui.timer_label.after(
+                    1000, self.timer_countdown, config.TIME_PRESET - 1
+                )
 
-    # def timer_restart(self) -> None:
-    #     """
-    #     Restarting the timer.
-    #     :return: None.
-    #     """
-    #     self.countdown_stop = True
-    #     self.gui.timer_label.destroy()
-    #     self.gui.create_timer_bar()
-    #     self.countdown_stop = False
-    #     self.timer_launch()
-    #
-    # def timer_countdown(self, duration) -> None:
-    #     """
-    #     Implementing the time countdown.
-    #     :param duration: The starting value of the time countdown.
-    #     :return: None.
-    #     """
-    #     if duration > 6 and not self.countdown_stop and not self.countdown_restart:
-    #         self.gui.timer_label.after(
-    #             0, self.timer_label_config, Timer.time_format(duration)
-    #         )
-    #         self.gui.timer_label.after(1000, self.timer_countdown, duration - 1)
-    #     elif 1 <= duration <= 6 and not self.countdown_stop and not self.countdown_restart:
-    #         if duration % 2 == 0:
-    #             self.gui.timer_label.after(
-    #                 0, self.timer_label_config, Timer.time_format(duration)
-    #             )
-    #             self.gui.timer_label.after(1000, self.timer_countdown, duration - 1)
-    #         else:
-    #             self.gui.timer_label.after(
-    #                 0, self.timer_label_config_1, Timer.time_format(duration)
-    #             )
-    #             self.gui.timer_label.after(1000, self.timer_countdown, duration - 1)
-    #
-    #     elif duration == 0 and self.minefield_init:
-    #         self.show_all_cell.show_all_cell(config.BUTTONS)
-    #         showinfo("Game over!", "Time is over!")
-    #     elif duration == 0 and not self.minefield_init:
-    #         showinfo("Game over!", "Time is over!")
-    #     elif self.countdown_restart:
-    #         self.gui.timer_label.config(text=f"{self.time_format(duration)}")
-    #
-    # def timer_launch(self) -> None:
-    #     """
-    #     Running the time countdown.
-    #     :return: None.
-    #     """
-    #     self.timer_label_config(self.time_format(config.TIME_PRESET))
-    #     self.timer_countdown(config.TIME_PRESET)
+            elif not config.TIME_PRESET and not self.countdown_stop:
+                self.show_all_cell.show_all_cell(config.BUTTONS)
+                showinfo("Game over!", "Time is over!")
+                config.GAME_OVER = True
+        else:
+            return
 
     def timer_label_config(self, time_value: str) -> None:
         """
@@ -145,14 +112,13 @@ class Timer:
         """
         self.gui.timer_label.config(text=time_value, fg="black")
 
-    #
-    # def timer_label_config_1(self, time_value: str) -> None:
-    #     """
-    #     Representing the current value of the timer.
-    #     :param time_value: The current value of the timer.
-    #     :return: None.
-    #     """
-    #     self.gui.timer_label.config(text=time_value, fg="red")
+    def timer_label_config_1(self, time_value: str) -> None:
+        """
+        Representing the current value of the timer.
+        :param time_value: The current value of the timer.
+        :return: None.
+        """
+        self.gui.timer_label.config(text=time_value, fg="red")
 
     @staticmethod
     def time_format(seconds) -> str:
