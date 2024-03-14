@@ -74,13 +74,13 @@ class Game:
         """
 
         self.gui = MineSweeperGui()
-        self.menu = MenuBar()
+
         self.mines_init = MinesInstaller()
         self.mines_calc = MinesCalc()
         self.prnt = BtnConsoleRepr()
         self.show_all_cell = AllCellShow()
-
         self.timer = Timer(self.gui, self.show_all_cell)
+        self.menu = MenuBar(self.timer)
         self.win_event_handling = WinEventHandling(self.timer)
         self.click_handling = ClickHandling(
             self.gui,

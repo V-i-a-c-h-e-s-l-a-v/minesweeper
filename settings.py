@@ -13,6 +13,7 @@ from tkinter.messagebox import showinfo
 import config
 from i_game_reloader import IGameReloader
 from utils import ExitHandling
+from timer import Timer
 
 
 class MenuBar:
@@ -32,7 +33,8 @@ class MenuBar:
         - reload_game: Running the new session of the game.
     """
 
-    def __init__(self):
+    def __init__(self, timer: Timer):
+        self.timer = timer
         self.for_exit = None
 
     def set_reloader(self, reloader: IGameReloader) -> None:
@@ -43,6 +45,11 @@ class MenuBar:
         :return: None.
         """
         self.reloader = reloader
+
+    def settings_cancel(self, win_settings: tk.Toplevel):
+        self.timer.countdown_stop = False
+        self.timer.timer_countdown(config.TIME_PRESET)
+        win_settings.destroy()
 
     def settings_apply(
         self,
@@ -82,7 +89,7 @@ class MenuBar:
 
         :return: None.
         """
-
+        self.timer.countdown_stop = True
         win_settings = tk.Toplevel(config.WINDOW)
         win_settings.title("Settings")
 
@@ -106,9 +113,11 @@ class MenuBar:
         time_preset_entry.grid(row=3, column=1, padx=3, pady=3)
         time_preset_entry.insert(0, str(config.TIME_PRESET))
 
-        tk.Button(win_settings, text="Cancel", command=win_settings.destroy).grid(
-            row=4, column=0
-        )
+        tk.Button(
+            win_settings,
+            text="Cancel",
+            command=lambda: self.settings_cancel(win_settings),
+        ).grid(row=4, column=0)
         tk.Button(
             win_settings,
             text="Apply",
