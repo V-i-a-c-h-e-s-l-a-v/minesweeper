@@ -39,7 +39,7 @@ class ExitHandling:
 
         :return: None.
         """
-        self.timer.flag = True
+        self.timer.countdown_stop = True
         self.window.destroy()
 
 

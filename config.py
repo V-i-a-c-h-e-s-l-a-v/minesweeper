@@ -13,9 +13,10 @@ WINDOW = tk.Tk()  #
 # ---- Main presets ------
 ROW: int = 5
 COLUMN: int = 5
-MINES: int = 3
+MINES: int = 1
 BUTTONS: list[list[MyButton]] = []
 TIME_PRESET: int = 10
+TIME_PRESET_TEMP = 10
 MINES_LEFT: int = MINES
 
 # ----- Colors presets ----

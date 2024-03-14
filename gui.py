@@ -100,7 +100,7 @@ class MineSweeperGui:
         """
 
         self.number = 1  # Counting the number of cells.
-        self.timer_label = None
+        self.timer_label: tk.Label | None = None
         self.mines_left_label = None
 
     def create_list_of_buttons_list(self) -> None:

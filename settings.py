@@ -66,6 +66,7 @@ class MenuBar:
             config.COLUMN = int(column.get())
             config.MINES = int(mines.get())
             config.TIME_PRESET = int(time_preset_entry.get())
+            config.TIME_PRESET_TEMP = int(time_preset_entry.get())
             self.reload_game()
         except ValueError:
             showinfo("ValueError!", "Integers only!")

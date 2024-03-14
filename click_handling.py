@@ -80,7 +80,7 @@ class ClickHandling:
         if not self.first_click_done:
             click_btn_number = click_btn.number
             self.mines_init.setting_mines(config.BUTTONS, click_btn_number)
-            self.timer.minefield_init = True
+            self.timer.timer_launcher()
             self.mines_calc.mines_calc_init(config.BUTTONS)
             self.prnt.print_btn(config.BUTTONS)
             self.left_click_handling(click_btn)
@@ -110,7 +110,8 @@ class ClickHandling:
         """
 
         if self.win_event_handling.win_even_handling(config.BUTTONS):
-            self.timer.stop = True
+            print(self.win_event_handling.win_even_handling(config.BUTTONS))
+            self.timer.countdown_stop = True
             showinfo("Game over!", "All mines found!")
             self.show_all_cell.show_all_cell(config.BUTTONS)
 
@@ -123,7 +124,8 @@ class ClickHandling:
         if click_btn.is_mine:
             # If the cell has a mine "*" the game is over.
             click_btn.is_open = True
-            self.timer.flag = True
+            self.timer.countdown_stop = True
+            self.timer.timer_launcher()
             click_btn.config(
                 text="🚩",
                 disabledforeground="red",
@@ -139,12 +141,13 @@ class ClickHandling:
                 disabledforeground=f"{config.COLORS_PRESET[click_btn.adjacent_mines_count]}",
             )
             click_btn.is_open = True
-
-            self.timer.timer_restart()  # Restarting the time countdown.
+            self.timer.countdown_restart = True
+            self.timer.timer_launcher()  # Restarting the time countdown.
 
         else:
             self.breadth_first_search(click_btn)
-            self.timer.timer_restart()
+            self.timer.countdown_restart = True
+            self.timer.timer_launcher()
 
     def right_click_handling(self, event) -> None:
         """
@@ -155,7 +158,7 @@ class ClickHandling:
         """
 
         if self.win_event_handling.win_even_handling(config.BUTTONS):
-            self.timer.stop = True
+            self.timer.countdown_restart = True
             showinfo("Game over!", "All mines found!")
             self.show_all_cell.show_all_cell(config.BUTTONS)
 
@@ -187,7 +190,7 @@ class ClickHandling:
         """
 
         if self.win_event_handling.win_even_handling(config.BUTTONS):
-            self.timer.stop = True
+            self.timer.countdown_restart = True
             showinfo("Game over!", "All mines found!")
             self.show_all_cell.show_all_cell(config.BUTTONS)
 
@@ -195,7 +198,7 @@ class ClickHandling:
 
         while btn_queue:
             if self.win_event_handling.win_even_handling(config.BUTTONS):
-                self.timer.stop = True
+                self.timer.countdown_restart = True
                 showinfo("Game over!", "All mines found!")
                 self.show_all_cell.show_all_cell(config.BUTTONS)
 

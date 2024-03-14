@@ -115,7 +115,7 @@ class Game:
         self.menu.set_reloader(self.game_reloader)
         self.click_handling.btn_click_bind()
         self.gui.create_timer_bar()
-        self.timer.timer_launch()
+        self.gui.timer_label.config(text=self.timer.time_format(config.TIME_PRESET))
         self.gui.create_mines_left_bar(config.MINES)
         config.WINDOW.mainloop()
 
