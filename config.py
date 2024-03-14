@@ -33,3 +33,7 @@ COLORS_PRESET = {
     7: "#fc03a5",
     8: "#fc0328",
 }
+
+# ---- Music file ----
+
+MUSIC_FILE = "DasBoot.mid"

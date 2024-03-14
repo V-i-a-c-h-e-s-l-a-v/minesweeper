@@ -30,6 +30,7 @@ from show_all_cell import AllCellShow
 from game_reloader import GameReloader
 from end_game_handler import WinEventHandling
 from timer import Timer
+import music_manager
 
 
 class Game:
@@ -109,6 +110,7 @@ class Game:
         a certain order to run the game functionality.
         :return: None
         """
+        music_manager.music_play()
         self.gui.create_list_of_buttons_list()
         self.gui.create_button_widgets()
 
