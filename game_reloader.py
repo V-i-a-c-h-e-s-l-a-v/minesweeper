@@ -10,6 +10,7 @@ from click_handling import ClickHandling
 from i_game_reloader import IGameReloader
 from timer import Timer
 import tkinter as tk
+import music_manager
 
 
 class GameReloader(IGameReloader):
@@ -70,6 +71,9 @@ class GameReloader(IGameReloader):
 
         :return: None.
         """
+        music_manager.music_stop()
+        music_manager.music_value(config.MUSIC_VALUE)
+        music_manager.music_play()
 
         config.BUTTONS = []  # Sets up the empty list instead of the list of
         # button lists.

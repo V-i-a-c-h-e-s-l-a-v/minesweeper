@@ -18,6 +18,7 @@ BUTTONS: list[list[MyButton]] = []
 TIME_PRESET: int = 10
 TIME_PRESET_TEMP = 10
 MINES_LEFT: int = MINES
+MUSIC_VALUE: float = 0.5
 GAME_OVER = False
 
 
