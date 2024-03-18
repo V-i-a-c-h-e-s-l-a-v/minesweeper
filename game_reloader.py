@@ -71,8 +71,7 @@ class GameReloader(IGameReloader):
 
         :return: None.
         """
-        music_manager.music_stop()
-        music_manager.music_value(config.MUSIC_VALUE)
+
         music_manager.music_play()
 
         config.BUTTONS = []  # Sets up the empty list instead of the list of

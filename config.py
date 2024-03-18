@@ -19,6 +19,8 @@ TIME_PRESET: int = 10
 TIME_PRESET_TEMP = 10
 MINES_LEFT: int = MINES
 MUSIC_VALUE: float = 0.5
+MUSIC_ON = False
+MUSIC_OFF = False
 GAME_OVER = False
 
 

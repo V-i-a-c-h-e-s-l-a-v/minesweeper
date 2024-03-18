@@ -12,6 +12,7 @@ from tkinter import ttk
 import tkinter as tk
 from tkinter.messagebox import showinfo
 import config
+import music_manager
 from i_game_reloader import IGameReloader
 from utils import ExitHandling
 from timer import Timer
@@ -41,8 +42,12 @@ class MenuBar:
         self.manual: ttk.Label | None = None
 
     def update_music_value(self, val):
-        val_rounded = round(float(val), 1)
-        self.num.set("Music value:" + str(val_rounded))
+        val = float(val)
+
+        sequence = [round((i / 100), 3) for i in range(5, 50 + 1)]
+        music_val = (val - min(sequence)) / ((max(sequence) - min(sequence)) / 100)
+        self.num.set("Music value:" + str(int(music_val)))
+        music_manager.music_value(val)
 
     def set_reloader(self, reloader: IGameReloader) -> None:
         """
@@ -64,7 +69,6 @@ class MenuBar:
         column: tk.Entry,
         mines: tk.Entry,
         time_preset_entry: tk.Entry,
-        miusic_value: ttk.Scale,
     ) -> None:
         """
             Implements the functionality of the 'Apply' button, which is used
@@ -82,7 +86,6 @@ class MenuBar:
             config.MINES = int(mines.get())
             config.TIME_PRESET = int(time_preset_entry.get())
             config.TIME_PRESET_TEMP = int(time_preset_entry.get())
-            config.MUSIC_VALUE = float(miusic_value.get())
             self.reload_game()
         except ValueError:
             showinfo("ValueError!", "Integers only!")
@@ -129,8 +132,8 @@ class MenuBar:
             win_settings,
             orient="horizontal",
             length=100,
-            from_=0.1,
-            to=1.0,
+            from_=0.05,
+            to=0.5,
             command=self.update_music_value,
         )
         scale.grid(row=4, column=1)
