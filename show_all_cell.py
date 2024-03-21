@@ -25,28 +25,20 @@ class AllCellShow:
             for j in range(1, config.COLUMN + 1):
                 btn = buttons[i][j]
                 if btn.is_mine and not btn.is_open:
-                    btn.config(
-                        text="🚩",
-                        state="disabled",
-                    )
-
+                    btn.state(["disabled"])
+                    btn["text"] = "🚩"
                 elif (
                     not btn.is_mine
                     and not btn.is_open
                     and btn.adjacent_mines_count != 0
                 ):
-                    btn.config(
-                        text=f"{btn.adjacent_mines_count}",
-                        state="disabled",
-                        relief=tk.SUNKEN,
-                    )
+                    btn["text"] = f"{btn.adjacent_mines_count}"
+                    btn.state(["disabled"])
+
                 elif (
                     not btn.is_mine
                     and not btn.is_open
                     and btn.adjacent_mines_count == 0
                 ):
-                    btn.config(
-                        text="",
-                        state="disabled",
-                        relief=tk.SUNKEN,
-                    )
+                    btn["text"] = None
+                    btn.state(["disabled"])

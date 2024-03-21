@@ -2,7 +2,7 @@
      This module is used to provide the game reload functionality.
 """
 
-
+from tkinter import ttk
 import config
 from gui import MineSweeperGui
 from utils import MinesInstaller, MinesCalc, BtnConsoleRepr
@@ -42,6 +42,7 @@ class GameReloader(IGameReloader):
     def __init__(
         self,
         gui: MineSweeperGui,
+        style: ttk.Style,
         mines_init: MinesInstaller,
         mines_calc: MinesCalc(),
         timer: Timer,
@@ -59,6 +60,7 @@ class GameReloader(IGameReloader):
         :param prnt: The instance of the class BtnConsoleRepr.
         """
         self.gui = gui
+        self.style = style
         self.mines_init = mines_init
         self.mines_calc = mines_calc
         self.timer = timer
@@ -89,7 +91,9 @@ class GameReloader(IGameReloader):
             if not isinstance(child, tk.Menu):
                 child.destroy()
 
-        self.gui.__init__()  # Reinitializing the MineSweeperGui class by its constructor
+        self.gui.__init__(
+            self.style
+        )  # Reinitializing the MineSweeperGui class by its constructor
         # method.
         self.gui.create_list_of_buttons_list()
         self.gui.create_button_widgets()

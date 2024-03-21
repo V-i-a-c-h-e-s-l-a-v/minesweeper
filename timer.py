@@ -2,6 +2,8 @@
 This module is used to provide the time countdown.
 The Current module includes the Timer class.
 """
+from tkinter import ttk
+from tkinter import *
 
 import config
 from gui import MineSweeperGui
@@ -23,7 +25,12 @@ class Timer:
         - time_format: Setting the proper timer value representation.
     """
 
-    def __init__(self, gui: MineSweeperGui, show_all_cell: AllCellShow):
+    def __init__(
+        self,
+        style: ttk.Style,
+        gui: MineSweeperGui,
+        show_all_cell: AllCellShow,
+    ):
         """
         Construct class Timer.
         :param gui: The instance of the class MineSweeperGui which is a
@@ -42,6 +49,8 @@ class Timer:
 
         """
         self.gui = gui
+        self.style = style
+        self.string_var = StringVar()
         self.show_all_cell = show_all_cell
         self.countdown_stop = False
         self.countdown_restart = False
@@ -110,7 +119,10 @@ class Timer:
         :param time_value: The current value of the timer.
         :return: None.
         """
-        self.gui.timer_label.config(text=time_value, fg="black")
+        print("Timer")
+        self.string_var.set("Time: " + time_value + "sec.")
+        self.gui.timer_label["textvariable"] = self.string_var
+        self.gui.timer_label["foreground"] = "black"
 
     def timer_label_config_1(self, time_value: str) -> None:
         """
@@ -118,7 +130,9 @@ class Timer:
         :param time_value: The current value of the timer.
         :return: None.
         """
-        self.gui.timer_label.config(text=time_value, fg="red")
+        self.string_var.set("Time: " + time_value + "sec.")
+        self.gui.timer_label["textvariable"] = self.string_var
+        self.gui.timer_label["foreground"] = "red"
 
     @staticmethod
     def time_format(seconds) -> str:

@@ -43,10 +43,9 @@ class MenuBar:
 
     def update_music_value(self, val):
         val = float(val)
-
         sequence = [round((i / 100), 3) for i in range(5, 50 + 1)]
         music_val = (val - min(sequence)) / ((max(sequence) - min(sequence)) / 100)
-        self.num.set("Music value:" + str(int(music_val)))
+        self.num.set("Music value: " + str(round(music_val, 1)) + "%")
         music_manager.music_value(val)
 
     def set_reloader(self, reloader: IGameReloader) -> None:
@@ -133,7 +132,7 @@ class MenuBar:
             orient="horizontal",
             length=100,
             from_=0.05,
-            to=0.5,
+            to=1.0,
             command=self.update_music_value,
         )
         scale.grid(row=4, column=1)
@@ -147,7 +146,10 @@ class MenuBar:
             win_settings,
             text="Apply",
             command=lambda: self.settings_apply(
-                rows_entry, columns_entry, mines_entry, time_preset_entry, scale
+                rows_entry,
+                columns_entry,
+                mines_entry,
+                time_preset_entry,
             ),
         ).grid(row=5, column=1)
 

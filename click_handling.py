@@ -2,7 +2,8 @@
 The click_handling module is used for the button click event handling.
 """
 
-import tkinter as tk
+from tkinter import *
+from tkinter import ttk
 import config
 import utils
 from tkinter.messagebox import showinfo
@@ -32,6 +33,7 @@ class ClickHandling:
     def __init__(
         self,
         gui: MineSweeperGui,
+        style: ttk.Style,
         mines_init: utils.MinesInstaller,
         mines_calc: utils.MinesCalc,
         prnt: utils.BtnConsoleRepr,
@@ -62,6 +64,7 @@ class ClickHandling:
 
         """
         self.gui = gui
+        self.style = style
         self.mines_init = mines_init
         self.mines_calc = mines_calc
         self.prnt = prnt
@@ -113,30 +116,23 @@ class ClickHandling:
         self.win_event_handling.win_even_handling(config.BUTTONS)
 
         # Freeze the clicked button (only one click is possible).
-        click_btn.config(state="disabled")
+        click_btn.state(["disabled"])
         # Make the non-mined clicked button is sunken.
-        if not click_btn.is_mine:
-            click_btn.config(relief=tk.SUNKEN)
+        # if not click_btn.is_mine:
+        #     click_btn["style"] = "Cl-btn.TButton"
 
         if click_btn.is_mine:
-            # If the cell has a mine "*" the game is over.
+            # If the cell has a mine "🚩" the game is over.
             click_btn.is_open = True
             self.timer.countdown_stop = True
-            click_btn.config(
-                text="🚩",
-                disabledforeground="red",
-                state="disabled",
-            )
+            click_btn["text"] = ("🚩",)
             self.show_all_cell.show_all_cell(config.BUTTONS)
             showinfo("Game over!", "Game over!")
             config.GAME_OVER = True
 
         elif not click_btn.is_mine and click_btn.adjacent_mines_count != 0:
             # Displaying the number of mines in the adjacent cells.
-            click_btn.config(
-                text=f"{click_btn.adjacent_mines_count}",
-                disabledforeground=f"{config.COLORS_PRESET[click_btn.adjacent_mines_count]}",
-            )
+            click_btn["text"] = f"{click_btn.adjacent_mines_count}"
             click_btn.is_open = True
             self.timer.countdown_restart = True
             self.timer.timer_launcher()  # Restarting the time countdown.
@@ -158,10 +154,9 @@ class ClickHandling:
 
         cur_btn: MyButton = event.widget
 
-        if cur_btn["state"] == "normal" and config.MINES_LEFT > 0:
-            cur_btn["state"] = "disabled"
+        if cur_btn.instate(["!disabled"]) and config.MINES_LEFT > 0:
+            cur_btn.state(["disabled"])
             cur_btn["text"] = "🚩"
-            cur_btn["disabledforeground"] = "red"
             cur_btn.is_open = True
             config.MINES_LEFT -= 1
             self.gui.mines_left_label.destroy()
@@ -169,7 +164,7 @@ class ClickHandling:
 
         elif cur_btn["text"] == "🚩":
             cur_btn["text"] = ""
-            cur_btn["state"] = "normal"
+            cur_btn.state(["!disabled"])
             cur_btn.is_open = False
             config.MINES_LEFT += 1
             self.gui.mines_left_label.destroy()
@@ -199,23 +194,19 @@ class ClickHandling:
             current_btn = btn_queue.pop()
 
             if current_btn.adjacent_mines_count != 0:
-                current_btn.config(
-                    text=current_btn.adjacent_mines_count,
-                    disabledforeground=f"{config.COLORS_PRESET[current_btn.adjacent_mines_count]}",
-                )
+                current_btn["text"] = (current_btn.adjacent_mines_count,)
 
                 # Freeze the clicked button (only one click is possible).
-                current_btn.config(state="disabled")
+                current_btn.state(["disabled"])
                 # Make the clicked button is sunken.
-                click_btn.config(relief=tk.SUNKEN)
+
                 current_btn.is_open = True
             else:
-                current_btn.config(text="", disabledforeground="black")
+                # Make the clicked button is sunken.
+                current_btn["text"] = None
             current_btn.is_open = True
             # Freeze the clicked button (only one click is possible).
-            current_btn.config(state="disabled")
-            # Make the clicked button is sunken.
-            current_btn.config(relief=tk.SUNKEN)
+            current_btn.state(["disabled"])
             if current_btn.adjacent_mines_count == 0:
                 # It is used to obtain the coordinates of adjacent cells.
                 for dx in [-1, 0, 1]:

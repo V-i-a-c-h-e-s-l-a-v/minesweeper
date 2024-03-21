@@ -21,6 +21,8 @@ and contains the global variable values;
 - timer: This module is used to provide the time countdown.
 """
 
+
+from tkinter import ttk
 import config
 from gui import MineSweeperGui
 from settings import MenuBar
@@ -73,18 +75,21 @@ class Game:
         - exit_handling: Provides the instance of the class ExitHandling is used to
         properly implement the game exit procedure.
         """
+        self.style = ttk.Style()
+        self.style_config = config.AllStylesOfGUI(self.style)
 
-        self.gui = MineSweeperGui()
+        self.gui = MineSweeperGui(self.style)
 
         self.mines_init = MinesInstaller()
         self.mines_calc = MinesCalc()
         self.prnt = BtnConsoleRepr()
         self.show_all_cell = AllCellShow()
-        self.timer = Timer(self.gui, self.show_all_cell)
+        self.timer = Timer(self.style, self.gui, self.show_all_cell)
         self.menu = MenuBar(self.timer)
         self.win_event_handling = WinEventHandling(self.timer)
         self.click_handling = ClickHandling(
             self.gui,
+            self.style,
             self.mines_init,
             self.mines_calc,
             self.prnt,
@@ -95,6 +100,7 @@ class Game:
 
         self.game_reloader = GameReloader(
             self.gui,
+            self.style,
             self.mines_init,
             self.mines_calc,
             self.timer,
@@ -113,13 +119,11 @@ class Game:
         music_manager.music_play()
         self.gui.create_list_of_buttons_list()
         self.gui.create_button_widgets()
-
         self.menu.create_menu_bar(self.exit_handling)
         self.menu.set_reloader(self.game_reloader)
         self.click_handling.btn_click_bind()
         self.gui.create_timer_bar()
-        self.gui.timer_label.config(text=self.timer.time_format(config.TIME_PRESET))
-        self.gui.create_mines_left_bar(config.MINES)
+        self.gui.create_mines_left_bar(config.MINES_LEFT)
         config.WINDOW.mainloop()
 
 

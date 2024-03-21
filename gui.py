@@ -5,12 +5,12 @@ The module 'qui' has the following classes:
 - MineSweeper Gui.
 """
 
-
-import tkinter as tk
+from tkinter import *
+from tkinter import ttk
 import config
 
 
-class MyButton(tk.Button):
+class MyButton(ttk.Button):
     """
     Subclass MyButtons based on the superclass tk.Button which represents the Button widget
     from the Python builtin package Tkinter and extends its functionality by adding a dunder
@@ -32,7 +32,7 @@ class MyButton(tk.Button):
     x: int
     y: int
     number: int
-    master: tk.Tk
+    master: Tk
     adjacent_mines_count: int
 
     def __init__(
@@ -89,7 +89,7 @@ class MineSweeperGui:
 
     """
 
-    def __init__(self):
+    def __init__(self, style: ttk.Style):
         """
         Construct class MineSweeperGui.
         Attributes:
@@ -99,9 +99,11 @@ class MineSweeperGui:
         - window: Tkinter base widget.
         """
 
-        self.number = 1  # Counting the number of cells.
-        self.timer_label: tk.Label | None = None
-        self.mines_left_label = None
+        self.number: int = 1  # Counting the number of cells.
+        self.style = style
+        self.string_var = StringVar()
+        self.timer_label: ttk.Label | None = None
+        self.mines_left_label: ttk.Label | None = None
 
     def create_list_of_buttons_list(self) -> None:
         """
@@ -110,8 +112,11 @@ class MineSweeperGui:
 
         :return: None.
         """
+
         for i in range(config.ROW + 2):
-            temp = []  # List representing the grid row of tkinter buttons.
+            temp: list[
+                MyButton
+            ] = []  # List representing the grid row of tkinter buttons.
             for j in range(config.COLUMN + 2):
                 btn = MyButton(
                     config.WINDOW,
@@ -119,8 +124,7 @@ class MineSweeperGui:
                     j,
                     self.number,
                     adjacent_mines_count=0,
-                    width=3,
-                    font="Calibri 15 bold",
+                    style="Cell.TButton",
                 )
                 temp.append(btn)
                 # The two cell types should determine the position coordinate
@@ -129,10 +133,7 @@ class MineSweeperGui:
                 # - The second one is a non-border cell, which gets it own number.
                 # The first type of cell always does not have a mine, but the
                 # second type of cell may or may not be mined.
-                if i in [0, config.ROW + 1] or j in [
-                    0,
-                    config.COLUMN + 1,
-                ]:
+                if i in [0, config.ROW + 1] or j in [0, config.COLUMN + 1]:
                     btn.number = 0
                 else:
                     self.number += 1
@@ -155,19 +156,20 @@ class MineSweeperGui:
         # Fixing the bug of the cell size by setting the proportional weight
         # of the rows and columns.
         for i in range(1, config.ROW + 1):
-            tk.Grid.rowconfigure(config.WINDOW, i, weight=1)
+            Grid.rowconfigure(config.WINDOW, i, weight=1)
         for j in range(1, config.COLUMN + 1):
-            tk.Grid.columnconfigure(config.WINDOW, j, weight=1)
-        tk.Grid.rowconfigure(config.WINDOW, config.ROW + 2, weight=1)
+            Grid.columnconfigure(config.WINDOW, j, weight=1)
+        Grid.rowconfigure(config.WINDOW, config.ROW + 2, weight=1)
 
     def create_timer_bar(self) -> None:
         """
-         Creating Tkinter button widgets.
-
+         Creating time bar.
         :return: None.
         """
-        self.timer_label = tk.Label(config.WINDOW, text="", font="Arial 10")
-        self.timer_label.grid(row=config.ROW + 1, column=0, columnspan=3)
+
+        self.timer_label = ttk.Label(config.WINDOW, style="Time_countdown.TLabel")
+        self.timer_label["text"] = "Time:"
+        self.timer_label.grid(row=config.ROW + 1, column=0, columnspan=4)
 
     def create_mines_left_bar(self, mines_left: int) -> None:
         """
@@ -176,7 +178,8 @@ class MineSweeperGui:
 
         :return: None.
         """
-        self.mines_left_label = tk.Label(
-            config.WINDOW, text=f"Mines: {mines_left}", font="Arial 10"
-        )
-        self.mines_left_label.grid(row=config.ROW + 1, column=3, columnspan=2)
+
+        self.string_var.set("Mines: " + str(mines_left))
+        self.mines_left_label = ttk.Label(config.WINDOW, style="Mines_left.TLabel")
+        self.mines_left_label["textvariable"] = self.string_var
+        self.mines_left_label.grid(row=config.ROW + 1, column=4, columnspan=2)
