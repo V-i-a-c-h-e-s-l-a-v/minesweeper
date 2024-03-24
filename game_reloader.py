@@ -102,4 +102,4 @@ class GameReloader(IGameReloader):
         # indicator to the default value.
         self.click_handling.btn_click_bind()
         self.gui.create_timer_bar()
-        self.timer.timer_restart()
+        # self.timer.timer_restart()

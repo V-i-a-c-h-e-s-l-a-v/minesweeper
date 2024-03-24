@@ -43,9 +43,9 @@ class MenuBar:
 
     def update_music_value(self, val):
         val = float(val)
-        sequence = [round((i / 100), 3) for i in range(5, 50 + 1)]
+        sequence = [round((i / 100), 2) for i in range(0, 50 + 1)]
         music_val = (val - min(sequence)) / ((max(sequence) - min(sequence)) / 100)
-        self.num.set("Music value: " + str(round(music_val, 1)) + "%")
+        self.num.set("Music value: " + str(round(music_val, 2)) + "%")
         music_manager.music_value(val)
 
     def set_reloader(self, reloader: IGameReloader) -> None:
@@ -98,16 +98,16 @@ class MenuBar:
         btn_ok = ttk.Button(
             music_win, text="Dismiss", command=lambda: self.settings_cancel(music_win)
         )
-        btn_ok.grid(row=1, column=0, columnspan=2)
+        btn_ok.grid(row=1, column=0, columnspan=3)
         scale = ttk.Scale(
             music_win,
             orient="horizontal",
             length=100,
-            from_=0.05,
+            from_=0,
             to=1.0,
             command=self.update_music_value,
         )
-        scale.grid(row=0, column=1)
+        scale.grid(row=0, column=1, padx=3, pady=3)
         scale.set(config.MUSIC_VALUE)
 
     def create_settings_win(self) -> None:
@@ -185,10 +185,17 @@ class MenuBar:
         
         :return: None.
         """
+        config.WINDOW.option_add("*tearOff", False)
         menu_bar = tk.Menu(config.WINDOW)
-        config.WINDOW.config(
-            menu=menu_bar
-        )  # Configuring the menu of WINDOW to be menu_bar.
+        config.WINDOW.config(menu=menu_bar)
+
+        file_win = tk.Menu(menu_bar)
+        file_win.add_command(label="Save")
+        file_win.add_command(label="Open")
+
+        menu_bar.add_cascade(label="File", menu=file_win)
+
+        # Configuring the menu of WINDOW to be menu_bar.
         settings_menu = tk.Menu(menu_bar)
         settings_menu.add_command(label="New Game", command=self.reload_game)
         settings_menu.add_command(label="Settings", command=self.create_settings_win)
