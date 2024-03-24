@@ -84,10 +84,31 @@ class MenuBar:
             config.COLUMN = int(column.get())
             config.MINES = int(mines.get())
             config.TIME_PRESET = int(time_preset_entry.get())
-            config.TIME_PRESET_TEMP = int(time_preset_entry.get())
             self.reload_game()
         except ValueError:
             showinfo("ValueError!", "Integers only!")
+
+    def create_music_win(self):
+        music_win = tk.Toplevel(config.WINDOW)
+        music_win.title("Music")
+        self.timer.countdown_stop = True
+        self.timer.timer_countdown(config.TIME_PRESET)
+        self.manual = ttk.Label(music_win, textvariable=self.num)
+        self.manual.grid(row=0, column=0)
+        btn_ok = ttk.Button(
+            music_win, text="Dismiss", command=lambda: self.settings_cancel(music_win)
+        )
+        btn_ok.grid(row=1, column=0, columnspan=2)
+        scale = ttk.Scale(
+            music_win,
+            orient="horizontal",
+            length=100,
+            from_=0.05,
+            to=1.0,
+            command=self.update_music_value,
+        )
+        scale.grid(row=0, column=1)
+        scale.set(config.MUSIC_VALUE)
 
     def create_settings_win(self) -> None:
         """
@@ -100,10 +121,10 @@ class MenuBar:
 
         :return: None.
         """
-        self.timer.countdown_stop = True
+
         win_settings = tk.Toplevel(config.WINDOW)
         win_settings.title("Settings")
-
+        self.timer.countdown_stop = True
         tk.Label(win_settings, text="Rows number:").grid(row=0, column=0)
         rows_entry = tk.Entry(win_settings)
         rows_entry.grid(row=0, column=1, padx=3, pady=3)
@@ -124,24 +145,24 @@ class MenuBar:
         time_preset_entry.grid(row=3, column=1, padx=3, pady=3)
         time_preset_entry.insert(0, str(config.TIME_PRESET_TEMP))
 
-        self.manual = ttk.Label(win_settings, textvariable=self.num)
-        self.manual.grid(row=4, column=0)
-
-        scale = ttk.Scale(
-            win_settings,
-            orient="horizontal",
-            length=100,
-            from_=0.05,
-            to=1.0,
-            command=self.update_music_value,
-        )
-        scale.grid(row=4, column=1)
-        scale.set(config.MUSIC_VALUE)
+        # self.manual = ttk.Label(win_settings, textvariable=self.num)
+        # self.manual.grid(row=4, column=0)
+        #
+        # scale = ttk.Scale(
+        #     win_settings,
+        #     orient="horizontal",
+        #     length=100,
+        #     from_=0.05,
+        #     to=1.0,
+        #     command=self.update_music_value,
+        # )
+        # scale.grid(row=4, column=1)
+        # scale.set(config.MUSIC_VALUE)
         tk.Button(
             win_settings,
             text="Cancel",
             command=lambda: self.settings_cancel(win_settings),
-        ).grid(row=5, column=0)
+        ).grid(row=4, column=0)
         tk.Button(
             win_settings,
             text="Apply",
@@ -151,7 +172,7 @@ class MenuBar:
                 mines_entry,
                 time_preset_entry,
             ),
-        ).grid(row=5, column=1)
+        ).grid(row=4, column=1)
 
     def create_menu_bar(self, for_exit: ExitHandling) -> None:
         self.for_exit = for_exit
@@ -171,6 +192,7 @@ class MenuBar:
         settings_menu = tk.Menu(menu_bar)
         settings_menu.add_command(label="New Game", command=self.reload_game)
         settings_menu.add_command(label="Settings", command=self.create_settings_win)
+        settings_menu.add_command(label="Music", command=self.create_music_win)
         settings_menu.add_command(label="Exit", command=lambda: self.for_exit.exit())
         menu_bar.add_cascade(label="Menu", menu=settings_menu)
 

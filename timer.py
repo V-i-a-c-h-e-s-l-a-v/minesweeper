@@ -119,7 +119,7 @@ class Timer:
         :param time_value: The current value of the timer.
         :return: None.
         """
-        print("Timer")
+
         self.string_var.set("Time: " + time_value + "sec.")
         self.gui.timer_label["textvariable"] = self.string_var
         self.gui.timer_label["foreground"] = "black"
